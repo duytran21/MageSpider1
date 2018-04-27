@@ -1,3 +1,6 @@
+@import (reference) "flexbox.less";
+@import (reference) "mixin.less";
+
 html {
 	-webkit-font-smoothing: antialiased;
 }
@@ -21,11 +24,11 @@ html {
 
 .module-width {
 	max-width: 1610px;
-	padding: 30px 0;
+	padding: 0;
 	margin: 0 auto 30px;
 
 	@media only screen and (min-width: 1024px){
-		padding: 30px;
+		padding: 0 30px;
 	}
 }
 
@@ -68,8 +71,8 @@ html {
 }
 
 .block.widget .product-items-flex {
-	display: flex;
-	flex-wrap: wrap;
+	.mixin-display-flex();
+	.mixin-flex-wrap(wrap);
 
 	.product-item {
 		width: 50%;
@@ -224,7 +227,9 @@ html {
 				top: 20%;
 				right: 150px;
 				left: unset;
-				transform: unset;
+				-webkit-transform: unset;
+                    -ms-transform: unset;
+                        transform: unset;
 
 			}
 		}
@@ -259,6 +264,10 @@ html {
 .logo-container {
 	width: 100%;
 	text-align: center;
+
+	@media only screen and (max-width: 767px){
+		.mixin-transform(@translateX: 0, @translateY: 10%);
+	}
 }
 
 .logo {
@@ -278,7 +287,13 @@ html {
 
 /*==============Block Search=============*/
 .block-search {
-
+	
+	.label {
+		position: absolute;
+		top: 0;
+		right: 0;
+		transform: translate(0%, 80%);
+	}
 	@media only screen and (min-width: 768px){
 		position: absolute;
 		top: 50%;
@@ -293,3 +308,49 @@ html {
 	font-family: 'Gotham', sans-serif;
 }
 
+/*============= Page Header ===========*/
+.page-header {
+	position: fixed;
+	width: 100%;
+	background-color: #fff;
+	z-index: 1000;
+}
+
+/*=========== Page Main ==============*/
+.page-main {
+	position: relative;
+	padding-top: 70px;
+	@media only screen and (min-width: 768px){
+		padding-top: 270px;
+	}
+}
+
+/*========== Navigation-Menu ===========*/
+
+.nav-sections {
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+}
+
+.navigation {
+	background: #fff;
+
+	ul {
+		text-transform: uppercase;
+		font-size: 12px;
+		font-family: "Gotham", sans-serif;
+
+	}
+
+	@media only screen and (min-width: 768px) {
+		ul {
+			.mixin-display-flex();
+			.mixin-justify-content(space-between);
+		}
+		.level0 {
+			.submenu a:hover, .submenu a:ui-state-focus {
+				background: #f1f1f1;
+			}
+		}
+	}
+}
