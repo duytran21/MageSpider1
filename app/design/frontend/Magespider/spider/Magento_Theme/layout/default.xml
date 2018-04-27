@@ -131,13 +131,8 @@
 
         <referenceBlock name="top.links" remove="true" />
         <referenceContainer name="page.top" remove="true" />
-        <!--
-        /**
-        *<referenceBlock name="footer_links" remove="true" />
-        **/
-        -->
+        <referenceBlock name="footer_links" remove="true" />
         <referenceBlock name="store_switcher" remove="true" />
-        <referenceBlock name="copyright" remove="true" />
         <referenceContainer name="header-wrapper">
             <block class="Magento\Framework\View\Element\Template" name="top.search" as="topSearch" template="Magento_Search::form.mini.phtml" />
         </referenceContainer>
@@ -158,7 +153,6 @@
             <container name="top.container" as="topContainer" label="After Page Header Top" htmlTag="div" htmlClass="top-container"/>
             <block class="Magento\Theme\Block\Html\Breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
         </referenceContainer>
-        <!--
         <referenceContainer name="footer">
             <block class="Magento\Cms\Block\Block" name="footer_menu">
                 <arguments>
@@ -166,6 +160,5 @@
                 </arguments>
             </block>
         </referenceContainer>
-        -->
     </body>
 </page>
