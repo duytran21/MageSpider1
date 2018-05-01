@@ -361,3 +361,47 @@ html {
 		margin: 0 auto;
 	}
 }
+
+/*=========== Footer ====================*/
+.footer-wrapper {
+	.mixin-display-flex();
+
+	.footer-about {
+		width: 30%;
+		padding-right: 50px;
+
+		h1 {
+			font-family: 'Georgia', sans-serif;
+			text-transform: uppercase;
+			font-size: 22px;
+			margin-bottom: 10px;
+		}
+	}
+
+	.footer-links {
+		width: 40%;
+		.mixin-display-flex();
+		.mixin-flex-wrap(wrap);
+		border-right: 1px solid #ccc;
+
+		.footer-item-link {
+			width: 50%;
+			ul {
+				padding-right: 20px;
+				padding-bottom: 20px;
+				a {
+					font-size: 13px;
+					font-family: 'Gotham-Light', sans-serif;
+					text-transform: uppercase;
+					color: #404142;
+				}
+			}
+		}
+	}
+
+	.footer-social {
+		padding-left: 50px;
+		width: 30%;
+	}
+
+}
