@@ -154,12 +154,14 @@
             <block class="Magento\Theme\Block\Html\Breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
         </referenceContainer>
         <referenceContainer name="footer">
-            <block class="Magento\Cms\Block\Block" name="footer_menu">
-                <arguments>
-                    <argument name="block_id" xsi:type="string">footer_menu</argument>
-                </arguments>
-            </block>
-            <block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" template="Magento_Newsletter::subscribe.phtml"/>
+            <container name="footer_wrapper" htmlTag="div" htmlClass="footer-wrapper">
+                <block class="Magento\Cms\Block\Block" name="footer_menu">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">footer_menu</argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" template="Magento_Newsletter::subscribe.phtml"/>
+            </container>
         </referenceContainer>
     </body>
 </page>
