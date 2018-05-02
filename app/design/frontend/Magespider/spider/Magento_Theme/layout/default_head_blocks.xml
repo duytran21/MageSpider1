@@ -12,7 +12,7 @@
         <css src="css/source/slick-theme.css"/>
         <css src="css/source/slick.css"/>
         <css src="css/source/custom.css"/>
-        <css src="css/source/fontawesome-all.min.css"/>
+        <css src="css/source/fontawesome-all.css"/>
         <script src="requirejs/require.js"/>
     </head>
     <body>
