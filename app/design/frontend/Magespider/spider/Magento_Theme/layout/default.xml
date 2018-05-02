@@ -162,6 +162,13 @@
                 </block>
                 <container name="footer_social" htmlTag="div" htmlClass="footer-social">
                     <block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" template="Magento_Newsletter::subscribe.phtml"/>
+                    <block class="Magento\Cms\Block\Block" name="social_link">
+                        <arguments>
+                            <argument name="block_id" xsi:type="string">
+                                social_link
+                            </argument>
+                        </arguments>
+                    </block>
                 </container>
             </container>
         </referenceContainer>
