@@ -8,7 +8,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceBlock name="top.account">
-            <block class="Magento\Customer\Block\Account\Link" name="my-account-link">
+            <block class="Magento\Customer\Block\Account\Link" name="my-account-link" template="Magento_Customer::account/navigation.phtml">
                 <arguments>
                     <argument name="label" xsi:type="string" translate="true">My Account</argument>
                     <argument name="sortOrder" xsi:type="number">110</argument>
