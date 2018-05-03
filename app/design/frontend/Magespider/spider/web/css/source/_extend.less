@@ -384,7 +384,8 @@ html {
 	}
 
 	.footer-links {
-		width: 40%;
+		width: 35%;
+		margin-top: 35px;
 		.mixin-display-flex();
 		.mixin-flex-wrap(wrap);
 		border-right: 1px solid #ccc;
@@ -406,17 +407,24 @@ html {
 
 	.footer-social {
 		padding-left: 50px;
-		width: 30%;
+		width: 35%;
 
 		.block.newsletter {
 			width: 100%;
+			margin-top: 15px;
 		}
 	}
 
 }
 
 .block.newsletter .actions {
-	width: auto;
+	
+	@media only screen and (min-width: 768px){
+		width: 80px;
+	}
+	@media only screen and (min-width: 1024px){
+		width: 120px;
+	}
 }
 
 .action.primary {
