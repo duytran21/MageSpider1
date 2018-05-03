@@ -370,10 +370,11 @@ html {
 /*=========== Footer ====================*/
 .footer-wrapper {
 	.mixin-display-flex();
+	.mixin-flex-wrap(wrap);
 
 	.footer-about {
-		width: 30%;
-		padding-right: 50px;
+		width: 100%;
+		
 
 		h1 {
 			font-family: 'Georgia', sans-serif;
@@ -384,11 +385,10 @@ html {
 	}
 
 	.footer-links {
-		width: 35%;
+		width: 100%;
 		margin-top: 35px;
 		.mixin-display-flex();
 		.mixin-flex-wrap(wrap);
-		border-right: 1px solid #ccc;
 
 		.footer-item-link {
 			width: 50%;
@@ -406,8 +406,8 @@ html {
 	}
 
 	.footer-social {
-		padding-left: 50px;
-		width: 35%;
+		width: 100%;
+		margin-bottom: 30px;
 
 		.block.newsletter {
 			width: 100%;
@@ -415,15 +415,44 @@ html {
 		}
 	}
 
+	@media only screen and (min-width: 768px){
+		.footer-about {
+			width: 50%;
+			padding-right: 50px;
+		}
+		.footer-links {
+			width: 50%;
+		}
+		.footer-social {
+			width: 100%;
+		}
+	}
+
+	@media only screen and (min-width: 1024px){
+		.footer-about {
+			width: 30%;
+		}
+		.footer-links {
+			width: 35%;
+			border-right: 1px solid #ccc;
+		}
+		.footer-social {
+			width: 35%;
+			padding-left: 50px;
+			margin-bottom: 0;
+		}
+
+	}
+
 }
 
 .block.newsletter .actions {
-	
+	max-width: 120px;
 	@media only screen and (min-width: 768px){
-		width: 80px;
+		
 	}
 	@media only screen and (min-width: 1024px){
-		width: 120px;
+
 	}
 }
 
