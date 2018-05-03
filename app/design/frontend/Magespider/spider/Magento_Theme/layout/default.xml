@@ -173,7 +173,7 @@
             </container>
         </referenceContainer>
         <referenceContainer name="header.panel">
-            <block class="Magento\Customer\Block\Account\Navigation" name="top.account">
+            <block class="Magento\Customer\Block\Account\Navigation" name="top.account" template="Magento_Theme::html/header.phtml">
                 <arguments>
                     <argument name="css_class" xsi:type="string">header links</argument>
                 </arguments>
