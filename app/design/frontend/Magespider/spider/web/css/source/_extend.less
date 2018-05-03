@@ -457,3 +457,25 @@ a.disabled {
 	pointer-events: none;
 	cursor: default;
 }
+
+.footer-social-link {
+	social-links {
+		.mixin-display-flex();
+		li {
+			margin-right: 20px;
+			a {
+				border: 1px solid #707171;
+				border-radius: 100%;
+				width: 25px;
+				height: 25px;
+				.mixin-display-flex();
+				.mixin-jusity-content(center);
+				.mixin-align-items(center);
+
+				.fa-facebook {
+					color: #2196f3;
+				}
+			}
+		}
+	}
+}
