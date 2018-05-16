@@ -95,6 +95,7 @@
             <block class="Magento\Theme\Block\Html\Breadcrumbs" name="breadcrumbs" as="breadcrumbs"/>
         </referenceContainer>
         <referenceContainer name="columns.top">
+            <block class="Magento\Theme\Block\Html\Title" name="page.main.title" template="Magento_Theme::html/title.phtml"/>
             <container name="page.messages" htmlTag="div" htmlClass="page messages">
                 <block class="Magento\Framework\View\Element\Template" name="ajax.message.placeholder" template="Magento_Theme::html/messages.phtml"/>
                 <block class="Magento\Framework\View\Element\Messages" name="messages" as="messages" template="Magento_Theme::messages.phtml"/>
@@ -178,5 +179,6 @@
                 </arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="page.main.title" remove="true" />
     </body>
 </page>
