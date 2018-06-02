@@ -654,3 +654,29 @@ a.disabled {
 		line-height: 1.5;
 	}
 }
+
+/*===============Flex Container===========*/
+.flex-container {
+	.mixin-display-flex();
+	.mixin-flex-direction(column);
+
+	@media only screen and (min-width: 768px){
+		.mixin-flex-direction(row);
+	}
+}
+
+.panel-first {
+	padding-right: 25px;
+}
+
+.panel-second {
+	padding-left: 25px;
+}
+
+.panel-half {
+	width: 100%;
+
+	@media only screen and (min-width: 768px){
+		width: 50%;
+	}
+}
