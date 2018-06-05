@@ -16,7 +16,7 @@
 ?>
 <?php if ($_title = $block->getCurrentCategory()->getName()): ?>
 	<?php if ($_imageUrl = $block->getCurrentCategory()->getImageUrl()): ?>
-    <h1 class="category-title">
+    <h1 class="category-title" style="display: none;">
         <?= /* @escapeNotVerified */ $this->helper('Magento\Catalog\Helper\Output')->categoryAttribute($block->getCurrentCategory(), $_title, 'title') ?>
     </h1>
 	<?php else: ?>
