@@ -15,9 +15,9 @@ define([
     var globalPriceFormat = {
         requiredPrecision: 2,
         integerRequired: 1,
-        decimalSymbol: '.',
-        groupSymbol: '.',
-        groupLength: '.'
+        decimalSymbol: ',',
+        groupSymbol: ',',
+        groupLength: ','
     };
 
     /**
@@ -48,7 +48,7 @@ define([
         //precision = isNaN(format.requiredPrecision = Math.abs(format.requiredPrecision)) ? 2 : format.requiredPrecision;
         precision = 0;
         integerRequired = isNaN(format.integerRequired = Math.abs(format.integerRequired)) ? 1 : format.integerRequired;
-        decimalSymbol = format.decimalSymbol === undefined ? ',' : format.decimalSymbol;
+        decimalSymbol = format.decimalSymbol === undefined ? '.' : format.decimalSymbol;
         groupSymbol = format.groupSymbol === undefined ? '.' : format.groupSymbol;
         groupLength = format.groupLength === undefined ? 3 : format.groupLength;
         pattern = format.pattern || '%s';
