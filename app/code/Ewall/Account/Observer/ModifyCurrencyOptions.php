@@ -54,7 +54,7 @@ class ModifyCurrencyOptions implements ObserverInterface
     {
         $currencyOptions = [];
 
-        if ($baseCode == 'VND') {
+        if ($baseCode == 'USD') {
 
             $currencyOptions['position'] = self::RIGHT; // switch currency symbol position to the RIGHT
         }
