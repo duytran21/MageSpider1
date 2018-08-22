@@ -16,7 +16,7 @@ define([
         requiredPrecision: 2,
         integerRequired: 1,
         decimalSymbol: ',',
-        groupSymbol: ',',
+        groupSymbol: '.',
         groupLength: ','
     };
 
