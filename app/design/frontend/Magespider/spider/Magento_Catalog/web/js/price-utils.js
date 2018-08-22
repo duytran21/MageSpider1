@@ -15,9 +15,9 @@ define([
     var globalPriceFormat = {
         requiredPrecision: 2,
         integerRequired: 1,
-        decimalSymbol: ',',
+        decimalSymbol: '.',
         groupSymbol: '.',
-        groupLength: ','
+        groupLength: '.'
     };
 
     /**
