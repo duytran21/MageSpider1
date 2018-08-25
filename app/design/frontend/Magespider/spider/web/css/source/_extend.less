@@ -697,6 +697,7 @@ a.disabled {
 
 		.price-box {
 			display: block;
+			width: unset;
 			.price-container .price {
 				font-size: 16px;
     			line-height: 1.2;
@@ -704,8 +705,16 @@ a.disabled {
 			}
 		}
 	}
+	.product-info-stock-sku{
+		display: block;
+		padding: 0;
+		text-align: left;
+	}
 	.product.attribute.sku .type {
 		color: #414042;
+		font-family: 'Gotham-Medium', sans-serif;
+		font-size: 13px;
+		font-weight: unset;
 	}
 }
 
@@ -713,4 +722,8 @@ a.disabled {
 	text-transform: uppercase;
 	font-family: 'Gotham-Medium', sans-serif;
 	font-size: 13px;
+
+	&:after {
+		content: ":";
+	}
 }
