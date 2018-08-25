@@ -65,7 +65,8 @@
                         </arguments>
                     </block>
                 </container>
-                <block class="Magento\Catalog\Pricing\Render" name="product.price.tier" after="product.info.price">
+                <block class="Magento\Catalog\Block\Product\View" name="product.info.name" template="Magento_Catalog::product/view/name.phtml" after="product.info.price" />
+                <block class="Magento\Catalog\Pricing\Render" name="product.price.tier" after="product.info.name">
                     <arguments>
                         <argument name="price_render" xsi:type="string">product.price.render.default</argument>
                         <argument name="price_type_code" xsi:type="string">tier_price</argument>
