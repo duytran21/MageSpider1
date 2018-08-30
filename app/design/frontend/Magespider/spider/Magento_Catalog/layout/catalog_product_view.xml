@@ -74,7 +74,7 @@
                     </arguments>
                 </block>
                 <block class="Magento\Catalog\Block\Product\View" name="product.info.review" template="Magento_Catalog::product/view/review.phtml" />
-                <referenceBlock name="product.info.review" remove="true" />
+                <!--<referenceBlock name="product.info.review" remove="true" /> -->
                 <container name="alert.urls" as="alert_urls" label="Alert Urls" after="product.price.tier"/>
                 <block class="Magento\Catalog\Block\Product\View" name="product.info" template="Magento_Catalog::product/view/form.phtml" after="alert.urls">
                     <container name="product.info.form.content" as="product_info_form_content">
@@ -94,8 +94,8 @@
                         <block class="Magento\Catalog\Block\Product\View" name="product.info.options.wrapper.bottom" as="product_options_wrapper_bottom" template="Magento_Catalog::product/view/options/wrapper/bottom.phtml">
                             <block class="Magento\Catalog\Block\Product\View" name="product.info.addtocart.additional" as="product.info.addtocart" template="Magento_Catalog::product/view/addtocart.phtml"/>
                         </block>
-                        <referenceBlock name="product.info.addtocart.additional" remove="true" />
-                        <referenceBlock name="product.info.options.default" remove="true" />
+                        <!--<referenceBlock name="product.info.addtocart.additional" remove="true" />
+                        <referenceBlock name="product.info.options.default" remove="true" /> -->
                     </block>
                 </block>
                 <container name="product.info.extrahint" as="extrahint" label="Product View Extra Hint">
