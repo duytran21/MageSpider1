@@ -720,6 +720,10 @@ a.disabled {
 			content: ":";
 		}
 	}
+	.product-reviews-summary {
+		float: none;
+		display: block;
+	}
 }
 
 .swatch-attribute-label {
@@ -729,5 +733,12 @@ a.disabled {
 
 	&:after {
 		content: ":";
+	}
+}
+
+.columns .column.main {
+	@media only screen and (max-width: 767px){
+		padding-left: 20px;
+		padding-right: 20px;
 	}
 }
