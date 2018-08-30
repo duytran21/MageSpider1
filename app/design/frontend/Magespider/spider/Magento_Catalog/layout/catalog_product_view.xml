@@ -188,6 +188,6 @@
                     name="product_viewed_counter"
                     template="Magento_Catalog::product/view/counter.phtml"/>
         </referenceContainer>
-        <referenceBlock name="product.info.review" after="product.price.final"/>
+        <move element="product.info.review" destination="product.info.price" as="product.new.review" after="product.price.final"/>
     </body>
 </page>
