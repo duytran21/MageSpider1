@@ -43,6 +43,7 @@
                             </arguments>
                         </block>
                     </container>
+                    <block class="Magento\Catalog\Block\Product\View" name="product.info.name" template="Magento_Catalog::product/view/name.phtml" />
                     <block class="Magento\Catalog\Block\Product\View" name="product.info.review" template="Magento_Catalog::product/view/review.phtml" after="product.info.stock.sku" />
                     <block class="Magento\Catalog\Pricing\Render" name="product.price.final">
                         <arguments>
