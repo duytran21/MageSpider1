@@ -198,7 +198,7 @@ switch ($type = $block->getType()) {
                         </strong>
 
                         <?= /* @escapeNotVerified */ $block->getProductPrice($_item) ?>
-                            <?php /* Hide Review on Product listing page */?>
+                            
                             <?php if ($templateType): ?>
                                 <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
                             <?php endif; ?>
