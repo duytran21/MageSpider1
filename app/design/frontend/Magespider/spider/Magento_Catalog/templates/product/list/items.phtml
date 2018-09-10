@@ -198,10 +198,10 @@ switch ($type = $block->getType()) {
                         </strong>
 
                         <?= /* @escapeNotVerified */ $block->getProductPrice($_item) ?>
-
-                            <?php if ($templateType): ?>
+                            <?/* Hide Review on Product listing page */?>
+                            <?/*php if ($templateType): ?>
                                 <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
-                            <?php endif; ?>
+                            <?php endif; */?>
 
                             <?php if ($canItemsAddToCart && !$_item->isComposite() && $_item->isSaleable() && $type == 'related'): ?>
                                 <?php if (!$_item->getRequiredOptions()): ?>
