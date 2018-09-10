@@ -52,11 +52,12 @@
                                 <?php
                                 echo $block->getProductPriceHtml($_item, $type);
                                 ?>
-                                <?php /* Hidding Product Review on Product Listing page 
-                                <?php if ($templateType): ?>
-                                    <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
-                                <?php endif; ?> 
-                                */ ?>
+                                <?php 
+                                /** Hidding Product Review on Product Listing page 
+                                 * <?php if ($templateType): ?>
+                                 *  <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                 *<?php endif; ?> 
+                                 */ ?>
                                 <?php if ($showWishlist || $showCompare || $showCart): ?>
                                     <div class="product-item-actions">
                                         <?php if ($showCart): ?>
