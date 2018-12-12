@@ -4,3 +4,23 @@
  *
  * Glory to Ukraine! Glory to the heroes!
  */
+
+ .post-holder {
+ 	background: #fff;
+ }
+
+ .post-short-holder {
+ 	background: #f3f4f1;
+	padding: 20px;
+ }
+
+.post-list .post-header .post-title {
+	float: none;
+	max-width: 100%;
+}
+ .post-list .post-header .post-title a {
+ 	color: #707171;
+ 	font-family: 'Georgia', sans-serif;
+ 	text-transform: uppercase;
+ 	display: block;
+ }
