@@ -5,6 +5,11 @@
  * Glory to Ukraine! Glory to the heroes!
  */
 
+ .post-list-wrapper {
+ 	max-width: 1240px;
+ 	margin: 0 auto;
+ }
+
  .post-holder {
  	background: #fff;
  }
@@ -12,6 +17,7 @@
  .post-short-holder {
  	background: #f3f4f1;
 	padding: 20px;
+	text-align: center;
  }
 
 .post-list .post-header .post-title {
