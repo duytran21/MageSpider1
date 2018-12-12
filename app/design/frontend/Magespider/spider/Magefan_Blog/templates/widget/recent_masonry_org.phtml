@@ -1,4 +1,4 @@
-<?php
+recent_masonry_org.phtml<?php
 /**
  * Copyright © Magefan (support@magefan.com). All rights reserved.
  * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
@@ -27,13 +27,6 @@
                 $_postName = $block->escapeHtml($_post->getTitle(), null, true);
             ?>
             <li class="post-holder post-holder-<?php echo $_post->getId() ?>">
-            <?php if ($featuredImage = $_post->getFeaturedImage()) { ?>
-                <div class="post-ftimg-hld">
-                    <a href="<?php echo $_postUrl ?>" title="<?php echo $_postName ?>">
-                        <img src="<?php echo $featuredImage ?>" alt="<?php echo $_postName ?>" />
-                    </a>
-                </div>
-            <?php } ?>
                 <div class="post-header">
 
                     <div class="post-title-holder clearfix">
@@ -65,6 +58,13 @@
 
                 <div class="post-content">
                     <div class="post-description clearfix">
+                        <?php if ($featuredImage = $_post->getFeaturedImage()) { ?>
+                        <div class="post-ftimg-hld">
+                            <a href="<?php echo $_postUrl ?>" title="<?php echo $_postName ?>">
+                                <img src="<?php echo $featuredImage ?>" alt="<?php echo $_postName ?>" />
+                            </a>
+                        </div>
+                        <?php } ?>
                         <?php if ($content = $block->getShorContent($_post)) { ?>
                             <div class="post-text-hld clearfix">
                                 <?php echo $content ?>
