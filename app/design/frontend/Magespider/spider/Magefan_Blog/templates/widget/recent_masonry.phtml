@@ -94,8 +94,8 @@ function( require, $, Masonry ) {
         jQueryBridget( 'masonry', Masonry, $ );
         $('.post-list').masonry({
             itemSelector: '.post-holder',
-            columnWidth: '.post-holder',
-            percentPosition: true
+            columnWidth: 300,
+            isFitWidth: true
         })
     });
 });

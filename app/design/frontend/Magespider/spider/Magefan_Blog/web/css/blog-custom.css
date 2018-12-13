@@ -10,10 +10,6 @@
  	margin: 0 auto;
  }
 
-.blog-widget-recent .post-sizer, 
-.blog-widget-recent .post-holder {
-	width: 33.33%;
-}
  .post-holder {
  	background: #fff;
  }
