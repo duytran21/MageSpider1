@@ -10,12 +10,17 @@
  	margin: 0 auto;
  }
  .blog-widget-recent .post-list {
- 	background: #EEE;
  	margin: 0 auto;
  }
 .blog-widget-recent .post-holder {
-	width: 310px;
+	width: 100%;
 	margin: 0;
+}
+
+@media only screen and (min-width: 768px){
+	.blog-widget-recent .post-holder {
+		width: 310px;
+	}
 }
  .post-holder {
  	background: #fff;
