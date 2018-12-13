@@ -14,7 +14,7 @@
  	margin: 0 auto;
  }
 .blog-widget-recent .post-holder {
-	width: unset;
+	width: 320px;
 }
  .post-holder {
  	background: #fff;
