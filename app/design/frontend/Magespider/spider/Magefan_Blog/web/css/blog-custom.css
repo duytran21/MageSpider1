@@ -6,7 +6,7 @@
  */
 
  .post-list-wrapper {
- 	max-width: 1240px;
+ 	width: 1240px;
  	margin: 0 auto;
  }
  .post-list {
