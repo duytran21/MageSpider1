@@ -6,7 +6,7 @@
  */
 
  .post-list-wrapper {
- 	width: 1240px;
+ 	max-width: 1240px;
  	margin: 0 auto;
  }
  .blog-widget-recent .post-list {
@@ -14,7 +14,7 @@
  	margin: 0 auto;
  }
 .blog-widget-recent .post-holder {
-	width: 280px;
+	width: 310px;
 	margin: 0;
 }
  .post-holder {
