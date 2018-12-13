@@ -9,12 +9,12 @@
  	width: 1240px;
  	margin: 0 auto;
  }
- .post-list {
+ .blog-widget-recent .post-list {
  	background: #EEE;
  	margin: 0 auto;
  }
 .blog-widget-recent .post-holder {
-	width: 180px;
+	width: unset;
 }
  .post-holder {
  	background: #fff;
