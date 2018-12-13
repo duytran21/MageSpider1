@@ -21,6 +21,7 @@
 <div class="post-list-wrapper blog-widget-recent blog-widget-recent-masonry">
     <h3 class="title"><?php echo $block->escapeHtml($block->getTitle()) ?></h3>
     <ul class="post-list clearfix">
+        <li class="post-sizer"></li>
         <?php foreach ($_postCollection as $_post) { ?>
             <?php
                 $_postUrl = $_post->getPostUrl();
@@ -93,6 +94,7 @@ function( require, $, Masonry ) {
         jQueryBridget( 'masonry', Masonry, $ );
         $('.post-list').masonry({
             itemSelector: '.post-holder',
+            columnWidth: '.post-holder',
             percentPosition: true
         })
     });

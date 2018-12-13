@@ -10,6 +10,10 @@
  	margin: 0 auto;
  }
 
+.post-sizer, 
+.post-holder {
+	width: 33.33%;
+}
  .post-holder {
  	background: #fff;
  }
