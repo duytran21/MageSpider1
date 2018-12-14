@@ -15,3 +15,11 @@
    role="button">
     <span><?= /* @escapeNotVerified */ __('Add to Compare') ?></span>
 </a>
+<a href="#"
+   class="action towishlist"
+   title="<?= $block->escapeHtmlHtml(__('Add to Wish List')) ?>"
+   aria-label="<?= $block->escapeHtmlHtml(__('Add to Wish List')) ?>"
+   data-post='<?= /* @noEscape */ $block->getAddToWishlistParams($block->getProduct()) ?>'  
+   data-action="add-to-wishlist" >
+    <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+</a>
