@@ -23,7 +23,7 @@
                     </block>
                     <block class="Magento\Catalog\Block\Product\ProductList\Item\Container" name="category.product.addto" as="addto">
                         <block class="Magento\Catalog\Block\Product\ProductList\Item\AddTo\Wishlist"
-                               name="category.product.addto.wishlist" as="Wishlist"
+                               name="category.product.addto.wishlist" as="wishlist"
                                template="Magento_Catalog::product/list/addto/wishlist.phtml" />
                         <block class="Magento\Catalog\Block\Product\ProductList\Item\AddTo\Compare"
                                name="category.product.addto.compare" as="compare"
