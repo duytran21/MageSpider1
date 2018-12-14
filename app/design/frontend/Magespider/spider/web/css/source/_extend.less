@@ -752,7 +752,7 @@ a.disabled {
 }
 
 .customer-account-login, .customer-account-create {
-	.column .main {
+	.column.main {
 		margin: 0 auto;
 		padding: 20px;
 
@@ -763,13 +763,20 @@ a.disabled {
 }
 
 .customer-account-login{
-	.column .main{
+	.column.main{
 		max-width: 1024px;
 	}
 }
 
 .customer-account-create {
-	.column .main {
+	.column.main {
 		max-width: 620px;
+	}
+}
+
+.page-products {
+	.product-item-actions {
+		.mixin-display-flex();
+		.mixin-justify-content(center);
 	}
 }
