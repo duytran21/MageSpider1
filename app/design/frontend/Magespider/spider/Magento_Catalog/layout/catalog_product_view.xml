@@ -12,6 +12,7 @@
             <block class="Magento\Catalog\Block\Product\View" name="product.info.name" template="Magento_Catalog::product/view/name.phtml" before="-" />
             <block class="Magento\Catalog\Block\Product\AbstractProduct" name="product.price.custom" template="Magento_Catalog::product/view/price_clone.phtml" after="product.info.name" />
         </referenceContainer>
+        <move element="product.info.review" destination="product.info.price" after="prodcut.info.name" before="product.price.custom" />
         <move element="product.info.review" destination="product.info.price" after="product.price.custom" before="product.info.stock.sku" />
     </body>
 </page>
