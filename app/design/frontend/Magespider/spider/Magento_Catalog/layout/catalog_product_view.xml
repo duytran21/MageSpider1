@@ -25,5 +25,6 @@
                 <argument name="title" translate="true" xsi:type="string">Details</argument>
             </arguments>
         </referenceBlock>
+        <referenceBlock name="product.attributes" remove="true"/>
     </body>
 </page>
