@@ -17,7 +17,13 @@
         <referenceBlock name="product.info.options.wrapper.bottom" remove="true" />
         <move element="product.info.description" destination="product.info.main" after="product.info.social"/>
         <referenceBlock name="product.info.description">
-            <argument name="at_label" xsi:type="string">Description</argument>
+            <arguments>
+                <argument name="at_call" xsi:type="string">getDescription</argument>
+                <argument name="at_code" xsi:type="string">description</argument>
+                <argument name="css_class" xsi:type="string">description</argument>
+                <argument name="at_label" xsi:type="string">Description</argument>
+                <argument name="title" translate="true" xsi:type="string">Details</argument>
+            </arguments>
         </referenceBlock>
     </body>
 </page>
