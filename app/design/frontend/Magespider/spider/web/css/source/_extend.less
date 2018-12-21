@@ -866,10 +866,26 @@ a.disabled {
 
 .columns .sidebar-additional {
 	padding: 0 15px;
+	margin-top: 15px;
+
+	.block-title {
+		font-family: 'Gotham', sans-serif;
+		strong {
+			font-size: 16px;
+			letter-spacing; 0.8px;
+			color: #414042;
+		}
+	}
 }
 
 [class*='block-compare']{
 	@media only screen and (max-width: 767px){
 		display: block;
+	}
+}
+
+.toolbar-amount {
+	@media only screen and (max-width: 767px){
+		display: none;
 	}
 }
