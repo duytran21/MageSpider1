@@ -1,0 +1,14 @@
+<?php
+/**
+ * Copying wishlist and modifiying code from trend.phtml and compare.phtml
+ */
+?>
+<?php $wishlistHelper = $this->helper('Magento\Wishlist\Helper\Data');?>
+<a href="#"
+   class="action towishlist"
+   title="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+   aria-label="<?= $block->escapeHtml(__('Add to Wish List')) ?>"
+   data-post='<?= /* @noEscape */ $wishlistHelper->getAddToWishlistParams($block->getProduct()) ?>'  
+   data-action="add-to-wishlist" >
+    <span><?= $block->escapeHtml(__('Add to Wish List')) ?></span>
+</a>

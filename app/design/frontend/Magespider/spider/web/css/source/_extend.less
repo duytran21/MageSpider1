@@ -5,6 +5,18 @@ html {
 	-webkit-font-smoothing: antialiased;
 }
 
+html, body {
+	@media only screen and (min-width: 768px){
+		margin-top: 120px;
+	}
+}
+
+.cms-home {
+	@media only screen and (min-width: 768px){
+		margin-top: 70px;
+	}
+}
+
 *, *:before, *:after {
 	box-sizing: border-box;
 	outline: 0;
@@ -319,6 +331,7 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 	width: 100%;
 	background-color: #fff;
 	z-index: 1000;
+	top: 0;
 }
 
 .page-header .panel.wrapper {
@@ -339,7 +352,7 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 	@media only screen and (min-width: 768px){
 		max-width: 1610px;
 		margin: 0 auto;
-		padding-top: 180px;
+		padding-top: 0;
 	}
 }
 
@@ -601,14 +614,14 @@ a.disabled {
 		top: unset;
 	}
 	@media only screen and (min-width: 768px){
-		margin-top: 30px;
+		margin-top: 0;
 	}
 }
 
 /*================CMS Page View==============*/
-.cms-page-view {
+.cms-page-view, .blog-post-view, .blog-category-view, .catalog-product-view {
 	.columns {
-		margin-top: 30px;
+		margin-top: 0;
 	}
 }
 
@@ -682,5 +695,197 @@ a.disabled {
 		.panel-half {
 			width: 50%;
 		}
+	}
+}
+
+/*===============Product Details==========*/
+.product-info-main{
+	.product-info-price {
+		display: block;
+
+		.product-item-name {
+			font-size: 25px;
+			color: #414042;
+			padding-left: 0;
+		}
+
+		.price-box {
+			display: block;
+			width: unset;
+			.price-container .price {
+				font-size: 16px;
+    			line-height: 1.2;
+    			color: #808285;
+			}
+		}
+
+		border-bottom: none;
+		margin-bottom: 0;
+	}
+	.product-info-stock-sku{
+		display: block;
+		padding: 0;
+		text-align: left;
+	}
+	.product.attribute.sku .type {
+		color: #414042;
+		font-family: 'Gotham-Medium', sans-serif;
+		font-size: 13px;
+		font-weight: 700;
+
+		&:after{
+			content: ":";
+		}
+	}
+	.product-reviews-summary {
+		float: none;
+		display: block;
+	}
+	.product-add-form {
+		padding-top: 0;
+		@media only screen and (max-width: 767px){
+			margin-left: -10px;
+		}
+	}
+
+	.product-social-links {
+		@media only screen and (min-width: 768px){
+			padding-bottom: 20px;
+			border-bottom: 1px solid #c1c1c1;
+		}
+	}
+}
+
+.swatch-attribute-label {
+	text-transform: uppercase;
+	font-family: 'Gotham-Medium', sans-serif;
+	font-size: 13px;
+	letter-spacing: 1px;
+
+	&:after {
+		content: ":";
+	}
+}
+
+.catalog-product-view {
+	.columns .column.main {
+		@media only screen and (max-width: 767px){
+			padding-left: 20px;
+			padding-right: 20px;
+		}
+	}
+}
+
+.customer-account-login, .customer-account-create {
+	.column.main {
+		margin: 0 auto;
+		padding: 20px;
+
+		@media only screen and (min-width: 1024px){
+			padding: 0;
+		}
+	}
+}
+
+.customer-account-login{
+	.column.main{
+		max-width: 1024px;
+	}
+}
+
+.customer-account-create {
+	.column.main {
+		max-width: 620px;
+	}
+}
+
+.page-products .products-grid .product-item {
+	text-align: center;
+}
+
+.page-products {
+	.product-item-actions {
+		.mixin-display-flex();
+		.mixin-justify-content(center);
+		margin-bottom: 20px;
+	}
+}
+
+/***********Modal Popup******/
+.modal-popup._show .modal-inner-wrap {
+	max-width: 500px;
+	margin-top: 100px;
+
+	@media only screen and (min-width: 768px){
+		margin-top: 260px;
+	}
+}
+/****************************/
+
+.product.attribute.description {
+	strong {
+		text-transform: uppercase;
+		font-family: 'Gotham-Medium', sans-serif;
+		font-size: 13px;
+		letter-spacing: 1px;
+		
+		&:after {
+			content: ":";
+		}
+	}
+}
+
+.module-title-baskerville {
+	font-family: 'Baskerville',serif;
+    font-size: 25px;
+    text-transform: uppercase;
+    line-height: 1.2;
+    font-weight: 300;
+}
+
+.compare.wrapper {
+	li {
+		margin-bottom: 0;
+
+		.action.compare {
+			line-height: 0;
+		    font-size: 13px;
+		    font-family: 'Gotham', sans-serif;
+		    font-weight: 300;
+		    letter-spacing: 0.8px;
+		    color: #414042;
+
+		    &:visited, &:hover, &:focus, &:active {
+		    	color: #333;
+		    	text-decoration: none;
+		    	font-weight: 700;
+		    }
+		}
+	}
+}
+
+.columns .sidebar-additional {
+	padding: 0 15px;
+	margin-top: 15px;
+
+	.block-title {
+		font-family: 'Gotham', sans-serif;
+		strong {
+			font-size: 16px;
+			letter-spacing: 0.8px;
+			color: #414042;
+		}
+	}
+}
+
+[class*='block-compare']{
+	@media only screen and (max-width: 767px){
+		display: block;
+	}
+}
+
+.toolbar-amount {
+	@media only screen and (max-width: 767px){
+		display: none;
 	}
 }

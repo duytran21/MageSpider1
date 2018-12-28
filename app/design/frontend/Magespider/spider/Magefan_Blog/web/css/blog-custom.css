@@ -1,0 +1,44 @@
+/**
+ * Copyright © Magefan (support@magefan.com). All rights reserved.
+ * See LICENSE.txt for license details (http://opensource.org/licenses/osl-3.0.php).
+ *
+ * Glory to Ukraine! Glory to the heroes!
+ */
+
+ .post-list-wrapper {
+ 	max-width: 1240px;
+ 	margin: 0 auto;
+ }
+ .blog-widget-recent .post-list {
+ 	margin: 0 auto;
+ }
+.blog-widget-recent .post-holder {
+	width: 100%;
+	margin: 0;
+}
+
+@media only screen and (min-width: 768px){
+	.blog-widget-recent .post-holder {
+		width: 310px;
+	}
+}
+ .post-holder {
+ 	background: #fff;
+ }
+
+ .post-short-holder {
+ 	background: #f3f4f1;
+	padding: 20px;
+	text-align: center;
+ }
+
+.post-list .post-header .post-title {
+	float: none;
+	max-width: 100%;
+}
+ .post-list .post-header .post-title a {
+ 	color: #707171;
+ 	font-family: 'Georgia', sans-serif;
+ 	text-transform: uppercase;
+ 	display: block;
+ }

@@ -53,10 +53,10 @@
                                 echo $block->getProductPriceHtml($_item, $type);
                                 ?>
 
-                                <?php if ($templateType): ?>
-                                    <?= $block->getReviewsSummaryHtml($_item, $templateType) ?>
-                                <?php endif; ?>
-
+                                <?php //if ($templateType): ?>
+                                    <?php //= $block->getReviewsSummaryHtml($_item, $templateType) ?>
+                                <?php //endif; ?> 
+                                 
                                 <?php if ($showWishlist || $showCompare || $showCart): ?>
                                     <div class="product-item-actions">
                                         <?php if ($showCart): ?>
