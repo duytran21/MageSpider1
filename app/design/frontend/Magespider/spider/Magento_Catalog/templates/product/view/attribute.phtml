@@ -17,6 +17,7 @@ $_helper = $this->helper('Magento\Catalog\Helper\Output');
 $_product = $block->getProduct();
 $_call = $block->getAtCall();
 $_code = $block->getAtCode();
+/*$_name = $block->getProductInfo()->getName();*/
 $_className = $block->getCssClass();
 $_attributeLabel = $block->getAtLabel();
 $_attributeType = $block->getAtType();
@@ -39,7 +40,8 @@ if ($_attributeType && $_attributeType == 'text') {
 ?>
 <?php if ($_attributeValue): ?>
 <div class="product attribute <?= /* @escapeNotVerified */ $_className ?>">
-    <?php if ($renderLabel): ?><strong class="type"><?= /* @escapeNotVerified */ $_attributeLabel ?></strong><?php endif; ?>
+    <?php if ($renderLabel): ?>
+    <strong class="type"><?= /* @escapeNotVerified */ $_attributeLabel ?></strong><?php endif; ?>
     <div class="value" <?= /* @escapeNotVerified */ $_attributeAddAttribute ?>><?= /* @escapeNotVerified */ $_attributeValue ?></div>
 </div>
 <?php endif; ?>
