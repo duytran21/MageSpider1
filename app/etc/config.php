@@ -120,6 +120,7 @@ return array (
     'Magento_CurrencySymbol' => 1,
     'Dotdigitalgroup_Email' => 1,
     'Magento_WishlistAnalytics' => 1,
+    'Magespider_Module' => 1,
     'Shopial_Facebook' => 1,
     'Temando_Shipping' => 1,
   ),
