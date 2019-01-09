@@ -12790,3 +12790,6 @@ Footer,Footer,theme,frontend/Magento/luma
 "Account Dashboard","Trang tổng quan tài khoản",theme,frontend/Magento/luma
 "Address Book","Sổ địa chỉ",theme,frontend/Magento/luma
 "Account Information","Thông tin tài khoản",theme,frontend/Magento/luma
+"Visit Us At Our Facebook","Liên kết trang Facebook"
+"Sign Up:","Đăng ký",module,Magento_Newsletter
+"Sign up for exclusive offers:","Đăng ký để nhận khuyến mãi đặc biệt:",module,Magento_Newsletter
