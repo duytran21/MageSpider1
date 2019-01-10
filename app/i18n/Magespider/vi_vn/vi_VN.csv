@@ -12793,7 +12793,7 @@ Footer,Footer,theme,frontend/Magento/luma
 "Visit Us At Our Facebook","Liên kết trang Facebook"
 "Sign Up","Đăng ký",module,Magento_Newsletter
 "Sign up for exclusive offers","Đăng ký để nhận khuyến mãi đặc biệt",module,Magento_Newsletter
-"Trending products","Sản phẩm nổi bật"
+"Trending Products","Sản phẩm nổi bật"
 "Sale","Khuyến mãi"
 "FAQ","Hỏi đáp"
 "Policies","Điều khoản"
@@ -12802,7 +12802,7 @@ Footer,Footer,theme,frontend/Magento/luma
 "Posted","Ngày đăng",module,Magefan_Blog
 "Categories","Danh mục",module,Magefan_Blog
 "Read more","Xem chi tiết",module,Magefan_Blog
-"Recent posts","Bài viết gần đây",module,Magefan_Blog
+"Recent Posts","Bài viết gần đây",module,Magefan_Blog
 "Previous","Cũ hơn",module,Magefan_Blog
 "Read more","Mới hơn",module,Magefan_Blog
-"Search posts here","Tìm kiếm bài viết",module,Magefan_Blog
+"Search posts here...","Tìm kiếm bài viết...",module,Magefan_Blog
