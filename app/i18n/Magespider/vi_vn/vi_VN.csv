@@ -12799,9 +12799,10 @@ Footer,Footer,theme,frontend/Magento/luma
 "Policies","Điều khoản"
 "Trending","Sản Phẩm nổi bật"
 "Recent blog posts","Những bài Blog mới nhất",module,Magefan_Blog
-"Posted","Ngày đăng",module,Magefan_Blog
+"Posted:","Ngày đăng:",module,Magefan_Blog
+"Categories:","Danh mục:",module,Magefan_Blog
 "Categories","Danh mục",module,Magefan_Blog
-"Read more","Xem chi tiết",module,Magefan_Blog
+"Read more &#187;","Xem chi tiết &#187;",module,Magefan_Blog
 "Recent Posts","Bài viết gần đây",module,Magefan_Blog
 "Previous","Cũ hơn",module,Magefan_Blog
 "Read more","Mới hơn",module,Magefan_Blog
