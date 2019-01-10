@@ -3280,7 +3280,7 @@ Phone,Phone,module,Magento_Contact
 Message,Message,module,Magento_Contact
 "Contacts Section","Phần liên hệ",module,Magento_Contact
 Contacts,"Liên hệ",module,Magento_Contact
-"Contact Us","Liên hệ với chúng tôi",module,Magento_Contact
+"Contact Us","Liên hệ",module,Magento_Contact
 "Enable Contact Us","Cho phép liên hệ với chúng tôi",module,Magento_Contact
 "Email Options","Tùy chọn email",module,Magento_Contact
 "Send Emails To","Gửi email đến",module,Magento_Contact
@@ -12759,7 +12759,7 @@ Password:,"Mật khẩu:",theme,frontend/Magento/luma
 "Order History","Lịch sử đặt hàng",theme,frontend/Magento/luma
 "View past orders","Xem các đơn hàng đã đặt",theme,frontend/Magento/luma
 Footer,Footer,theme,frontend/Magento/luma
-"About Us","Giới Thiệu Về Chúng Tôi",theme,frontend/Magento/luma
+"About Us","Giới Thiệu",theme,frontend/Magento/luma
 "Customer Service","Dịch vụ khách hàng",theme,frontend/Magento/luma
 "<a href=""tel:%store_phone"">%store_phone</a>","<a href=""tel:%store_phone""> %store_phone</a>",theme,frontend/Magento/luma
 "Hours of Operation:<br /><span class=""no-link"">%store_hours</span>.","Giờ hoạt động: <br /><span class=""no-link"">%store_hours</span>.",theme,frontend/Magento/luma
