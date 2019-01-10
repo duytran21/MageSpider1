@@ -12798,12 +12798,13 @@ Footer,Footer,theme,frontend/Magento/luma
 "FAQ","Hỏi đáp"
 "Policies","Điều khoản"
 "Trending","Sản Phẩm nổi bật"
-"Recent blog posts","Những bài Blog mới nhất",module,Magefan_Blog
+"Recent Blog Posts","Những bài Blog mới nhất",module,Magefan_Blog
 "Posted:","Ngày đăng:",module,Magefan_Blog
 "Categories:","Danh mục:",module,Magefan_Blog
+"Author:","Người đăng:",module,Magefan_Blog
 "Categories","Danh mục",module,Magefan_Blog
 "Read more &#187;","Xem chi tiết &#187;",module,Magefan_Blog
 "Recent Posts","Bài viết gần đây",module,Magefan_Blog
-"Previous","Cũ hơn",module,Magefan_Blog
-"Read more","Mới hơn",module,Magefan_Blog
+"&larr; Previous","&larr; Cũ hơn",module,Magefan_Blog
+"Next &rarr;","Mới hơn &rarr;",module,Magefan_Blog
 "Search posts here...","Tìm kiếm bài viết...",module,Magefan_Blog
