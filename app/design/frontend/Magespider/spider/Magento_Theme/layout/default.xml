@@ -51,6 +51,8 @@
         </referenceContainer>
         <referenceBlock name="page.main.title" remove="true" />
         <referenceBlock name="footer_links" remove="true" />
-        <referenceBlock name="minicart" remove="true" />
+        <!--
+            <referenceBlock name="minicart" remove="true" />
+        -->
     </body>
 </page>
