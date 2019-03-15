@@ -308,14 +308,14 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 	.label {
 		position: absolute;
 		top: 0;
-		right: 0;
-		transform: translate(0%, 80%);
+		right: 50px;
+		transform: translate(0%, 70%);
 	}
 	@media only screen and (min-width: 768px){
 		position: absolute;
 		top: 50%;
 		transform: translate(0%,-50%);
-		right: 20px;
+		left: 0;
 	}
 }
 
@@ -862,6 +862,12 @@ a.disabled {
 		    }
 		}
 	}
+	@media only screen and (min-width: 768px){
+		position: absolute;
+		top:50%;
+		right: 80px;
+		transform: translate(0%, -70%);
+	}
 }
 
 .columns .sidebar-additional {
@@ -892,4 +898,18 @@ a.disabled {
 
 .strike-text {
 	text-decoration: line-through;
+}
+
+/*******Mini Cart*********/
+.minicart-wrapper {
+	position: absolute;
+	top:0;
+	right: 5px;
+	transform: translate(0%, 65%);
+	margin-top:0;
+	@media only screen and (min-width: 640px){
+		top:50%;
+		transform: translate(0%, -50%);
+		right: 20px;
+	}
 }
