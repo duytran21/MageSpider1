@@ -25,7 +25,7 @@
         </referenceContainer>
         <referenceContainer name="form.additional.info">
             <block class="Magento\Framework\View\Element\Template" name="form_additional_info_customer" template="Magento_Customer::additionalinfocustomer.phtml"/>
-            <referenceBlock name="captcha" after="-" cachable="false"></referenceBlock>
+            <referenceBlock name="captcha" after="-" cacheable="false"></referenceBlock>
         </referenceContainer> 
     </body>
 </page>
