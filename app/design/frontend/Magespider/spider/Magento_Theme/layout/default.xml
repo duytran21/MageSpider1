@@ -51,7 +51,6 @@
         </referenceContainer>
         <referenceBlock name="page.main.title" remove="true" />
         <referenceBlock name="footer_links" remove="true" />
-        <referenceBlock name="form.subcribe" remove="true" />
         <!--
             <referenceBlock name="minicart" remove="true" />
         -->
