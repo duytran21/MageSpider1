@@ -271,6 +271,11 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 .nav-sections {
 	margin-bottom: 0;
 }
+.nav-open .nav-sections {
+	@media only screen and (max-width: 767px){
+		z-index: 1000;
+	}
+}
 
 /*==============Logo Header & Search Bar==============*/
 .promo-container {
