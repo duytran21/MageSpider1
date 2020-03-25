@@ -94,6 +94,7 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 	.product-item {
 		width: 50%;
 		text-align: center;
+		padding: 10px;
 		
 		.product-item-info{
 			.product-item-details {
@@ -112,11 +113,18 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 		}
 	}
 
+	@media only screen and (min-width: 768px){
+		.product-item {
+			width: 33.33333%;
+			
+		}
+	}
+
 	@media only screen and (min-width: 1024px){
 		.product-item {
 			width: 25%;
 			padding: 0 10px;
-			margin-left: 0;
+			
 		}
 	}
 }
