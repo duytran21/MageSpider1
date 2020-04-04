@@ -182,7 +182,7 @@ class GuestCartManagementTest extends WebapiAbstract
     /**
      * @magentoApiDataFixture Magento/Sales/_files/quote_with_customer.php
      * @expectedException \Exception
-     * @expectedExceptionMessage The customer can't be assigned to the cart because the cart isn't anonymous.
+     * @expectedExceptionMessage Cannot assign customer to the given cart. The cart is not anonymous.
      */
     public function testAssignCustomerThrowsExceptionIfTargetCartIsNotAnonymous()
     {
@@ -231,20 +231,22 @@ class GuestCartManagementTest extends WebapiAbstract
     }
 
     /**
-     * @magentoApiDataFixture Magento/Checkout/_files/quote_with_items_saved.php
+     * @magentoApiDataFixture Magento/Checkout/_files/quote_with_address_saved.php
      * @magentoApiDataFixture Magento/Sales/_files/quote.php
+     * @expectedException \Exception
+     * @expectedExceptionMessage Cannot assign customer to the given cart. Customer already has active cart.
      */
-    public function testAssignCustomerCartMerged()
+    public function testAssignCustomerThrowsExceptionIfCustomerAlreadyHasActiveCart()
     {
         /** @var $customer \Magento\Customer\Model\Customer */
         $customer = $this->objectManager->create(\Magento\Customer\Model\Customer::class)->load(1);
         // Customer has a quote with reserved order ID test_order_1 (see fixture)
         /** @var $customerQuote \Magento\Quote\Model\Quote */
         $customerQuote = $this->objectManager->create(\Magento\Quote\Model\Quote::class)
-            ->load('test_order_item_with_items', 'reserved_order_id');
+            ->load('test_order_1', 'reserved_order_id');
+        $customerQuote->setIsActive(1)->save();
         /** @var $quote \Magento\Quote\Model\Quote */
         $quote = $this->objectManager->create(\Magento\Quote\Model\Quote::class)->load('test01', 'reserved_order_id');
-        $expectedQuoteItemsQty = $customerQuote->getItemsQty() + $quote->getItemsQty();
 
         $cartId = $quote->getId();
 
@@ -283,12 +285,7 @@ class GuestCartManagementTest extends WebapiAbstract
             'customerId' => $customerId,
             'storeId' => 1,
         ];
-        $this->assertTrue($this->_webApiCall($serviceInfo, $requestData));
-        $mergedQuote = $this->objectManager
-            ->create(\Magento\Quote\Model\Quote::class)
-            ->load('test01', 'reserved_order_id');
-
-        $this->assertEquals($expectedQuoteItemsQty, $mergedQuote->getItemsQty());
+        $this->_webApiCall($serviceInfo, $requestData);
     }
 
     /**
@@ -333,7 +330,7 @@ class GuestCartManagementTest extends WebapiAbstract
      * @magentoApiDataFixture Magento/Sales/_files/quote.php
      * @magentoApiDataFixture Magento/Customer/_files/customer.php
      * @expectedException \Exception
-     * @expectedExceptionMessage You don't have the correct permissions to assign the customer to the cart.
+     * @expectedExceptionMessage Cannot assign customer to the given cart. You don't have permission for this operation.
      */
     public function testAssignCustomerByGuestUser()
     {

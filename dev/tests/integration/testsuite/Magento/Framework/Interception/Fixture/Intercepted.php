@@ -5,11 +5,10 @@
  * See COPYING.txt for license details.
  */
 
+// @codingStandardsIgnoreFile
+
 namespace Magento\Framework\Interception\Fixture;
 
-/**
- * phpcs:ignoreFile
- */
 class Intercepted extends InterceptedParent implements InterceptedInterface
 {
     protected $_key;
@@ -49,6 +48,7 @@ class Intercepted extends InterceptedParent implements InterceptedInterface
 
     /**
      * @SuppressWarnings(PHPMD.ShortMethodName)
+     * @SuppressWarnings(PHPMD.FinalImplementation) Suppressed as is a fixture but not a real code
      */
     final public function E($param1)
     {

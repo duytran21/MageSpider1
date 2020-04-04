@@ -91,7 +91,7 @@ class AssertImportedProducts extends AbstractConstraint
             if ($product->getDataConfig()['type_id'] === $this->productType) {
                 $resultProductsData = $this->getDisplayedProductData($product);
                 $resultCsvData = $this->getResultCsv($product->getSku());
-                \PHPUnit\Framework\Assert::assertEquals(
+                \PHPUnit_Framework_Assert::assertEquals(
                     $resultProductsData,
                     $resultCsvData,
                     'Products from page and csv are not match.'
@@ -155,7 +155,7 @@ class AssertImportedProducts extends AbstractConstraint
      *      'type' => 'simple',
      *      'qty' => '100',
      *      'weight' => '30',
-     *      'url_key' => 'simple_url',
+     *      'url_key' => 'simple_url'б,
      *      'website_ids' => [
      *          '1'
      *      ]

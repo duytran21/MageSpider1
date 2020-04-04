@@ -20,14 +20,14 @@ class AddressesAdditional extends Block
      *
      * @var string
      */
-    protected $addressSelector = '//tbody//tr[contains(.,"%s")]';
+    protected $addressSelector = '//li[address[contains(.,"%s")]]';
 
     /**
      * Selector for addresses block
      *
      * @var string
      */
-    protected $addressesSelector = '.additional-addresses';
+    protected $addressesSelector = '//li[address]';
 
     /**
      * Selector for delete link
@@ -74,19 +74,16 @@ class AddressesAdditional extends Block
      */
     public function isAdditionalAddressExists($address)
     {
-        $addressExists = true;
-        foreach (explode("\n", $address) as $addressItem) {
-            $addressElement = $this->_rootElement->find(
-                sprintf($this->addressSelector, $addressItem),
-                Locator::SELECTOR_XPATH
-            );
-            if (!$addressElement->isVisible()) {
-                $addressExists = false;
+        $additionalAddressExists = false;
+
+        $addresses = $this->_rootElement->getElements($this->addressesSelector, Locator::SELECTOR_XPATH);
+        foreach ($addresses as $addressBlock) {
+            if (strpos($addressBlock->getText(), $address) === 0) {
+                $additionalAddressExists = $addressBlock->isVisible();
                 break;
             }
         }
-
-        return $addressExists;
+        return $additionalAddressExists;
     }
 
     /**

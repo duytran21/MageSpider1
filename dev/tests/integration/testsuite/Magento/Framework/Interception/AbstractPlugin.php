@@ -7,35 +7,25 @@ namespace Magento\Framework\Interception;
 
 /**
  * Class GeneralTest
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractPlugin extends \PHPUnit\Framework\TestCase
 {
     /**
-     * Config reader
-     *
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $_configReader;
 
     /**
-     * Object Manager
-     *
      * @var \Magento\Framework\ObjectManagerInterface
      */
     protected $_objectManager;
 
     /**
-     * Applicartion Object Manager
-     *
      * @var \Magento\Framework\ObjectManagerInterface
      */
     private $applicationObjectManager;
 
-    /**
-     * Set up
-     */
     public function setUp()
     {
         if (!$this->_objectManager) {
@@ -46,19 +36,11 @@ abstract class AbstractPlugin extends \PHPUnit\Framework\TestCase
         \Magento\Framework\App\ObjectManager::setInstance($this->_objectManager);
     }
 
-    /**
-     * Tear down
-     */
     public function tearDown()
     {
         \Magento\Framework\App\ObjectManager::setInstance($this->applicationObjectManager);
     }
 
-    /**
-     * Set up Interception Config
-     *
-     * @param array $pluginConfig
-     */
     public function setUpInterceptionConfig($pluginConfig)
     {
         $config = new \Magento\Framework\Interception\ObjectManager\Config\Developer();
@@ -77,8 +59,7 @@ abstract class AbstractPlugin extends \PHPUnit\Framework\TestCase
         $areaList->expects($this->any())->method('getCodes')->will($this->returnValue([]));
         $configScope = new \Magento\Framework\Config\Scope($areaList, 'global');
         $cache = $this->createMock(\Magento\Framework\Config\CacheInterface::class);
-        $cacheManager = $this->createMock(\Magento\Framework\Interception\Config\CacheManager::class);
-        $cacheManager->method('load')->willReturn(null);
+        $cache->expects($this->any())->method('load')->will($this->returnValue(false));
         $definitions = new \Magento\Framework\ObjectManager\Definition\Runtime();
         $relations = new \Magento\Framework\ObjectManager\Relations\Runtime();
         $interceptionConfig = new Config\Config(
@@ -87,10 +68,7 @@ abstract class AbstractPlugin extends \PHPUnit\Framework\TestCase
             $cache,
             $relations,
             $config,
-            $definitions,
-            'interception',
-            null,
-            $cacheManager
+            $definitions
         );
         $interceptionDefinitions = new Definition\Runtime();
         $json = new \Magento\Framework\Serialize\Serializer\Json();

@@ -15,9 +15,6 @@ class GenderTest extends \PHPUnit\Framework\TestCase
     /** @var Gender */
     protected $_block;
 
-    /** @var \Magento\Customer\Model\Attribute */
-    private $_model;
-
     /**
      * Test initialization and set up. Create the Gender block.
      * @return void
@@ -31,8 +28,6 @@ class GenderTest extends \PHPUnit\Framework\TestCase
         )->createBlock(
             \Magento\Customer\Block\Widget\Gender::class
         );
-        $this->_model = $objectManager->create(\Magento\Customer\Model\Attribute::class);
-        $this->_model->loadByCode('customer', 'gender');
     }
 
     /**
@@ -54,8 +49,7 @@ class GenderTest extends \PHPUnit\Framework\TestCase
     public function testToHtml()
     {
         $html = $this->_block->toHtml();
-        $attributeLabel = $this->_model->getStoreLabel();
-        $this->assertContains('<span>' . $attributeLabel . '</span>', $html);
+        $this->assertContains('<span>Gender</span>', $html);
         $this->assertContains('<option value="1">Male</option>', $html);
         $this->assertContains('<option value="2">Female</option>', $html);
         $this->assertContains('<option value="3">Not Specified</option>', $html);

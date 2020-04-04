@@ -14,7 +14,6 @@ $salesRule = $objectManager->create(\Magento\SalesRule\Model\Rule::class);
 $data = [
     'name' => 'Test Coupon for General',
     'is_active' => true,
-    'store_labels' => [0 => 'Test Coupon for General'],
     'website_ids' => [
         \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get(
             \Magento\Store\Model\StoreManagerInterface::class
@@ -22,7 +21,7 @@ $data = [
     ],
     'customer_group_ids' => [1],
     'coupon_type' => \Magento\SalesRule\Model\Rule::COUPON_TYPE_SPECIFIC,
-    'coupon_code' => '2?ds5!2d',
+    'coupon_code' => uniqid(),
     'simple_action' => \Magento\SalesRule\Model\Rule::BY_PERCENT_ACTION,
     'discount_amount' => 10,
     'discount_step' => 1

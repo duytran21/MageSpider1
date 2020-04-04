@@ -9,10 +9,7 @@ use Magento\CatalogImportExport\Model\AbstractProductExportImportTestCase;
 
 class GroupedTest extends AbstractProductExportImportTestCase
 {
-    /**
-     * @return array
-     */
-    public function exportImportDataProvider(): array
+    public function exportImportDataProvider()
     {
         return [
             'grouped-product' => [
@@ -26,13 +23,17 @@ class GroupedTest extends AbstractProductExportImportTestCase
         ];
     }
 
+    public function importReplaceDataProvider()
+    {
+        return $this->exportImportDataProvider();
+    }
+
     /**
-     * @inheritdoc
+     * @param \Magento\Catalog\Model\Product $expectedProduct
+     * @param \Magento\Catalog\Model\Product $actualProduct
      */
-    protected function assertEqualsSpecificAttributes(
-        \Magento\Catalog\Model\Product $expectedProduct,
-        \Magento\Catalog\Model\Product $actualProduct
-    ): void {
+    protected function assertEqualsSpecificAttributes($expectedProduct, $actualProduct)
+    {
         $expectedAssociatedProducts = $expectedProduct->getTypeInstance()->getAssociatedProducts($expectedProduct);
         $actualAssociatedProducts = $actualProduct->getTypeInstance()->getAssociatedProducts($actualProduct);
 

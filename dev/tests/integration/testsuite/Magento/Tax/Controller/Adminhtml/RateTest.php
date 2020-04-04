@@ -3,7 +3,6 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\Tax\Controller\Adminhtml;
 
 /**
@@ -17,7 +16,7 @@ class RateTest extends \Magento\TestFramework\TestCase\AbstractBackendController
      */
     public function testAjaxSaveAction($postData, $expectedData)
     {
-        $this->getRequest()->setPostValue($postData)->setMethod('POST');
+        $this->getRequest()->setPostValue($postData);
 
         $this->dispatch('backend/tax/rate/ajaxSave');
 
@@ -85,7 +84,7 @@ class RateTest extends \Magento\TestFramework\TestCase\AbstractBackendController
      */
     public function testAjaxSaveActionInvalidData($postData, $expectedData)
     {
-        $this->getRequest()->setPostValue($postData)->setMethod('POST');
+        $this->getRequest()->setPostValue($postData);
 
         $this->dispatch('backend/tax/rate/ajaxSave');
 
@@ -110,7 +109,7 @@ class RateTest extends \Magento\TestFramework\TestCase\AbstractBackendController
     {
         $expectedData = [
             'success' => false,
-            'error_message' => 'The required information is invalid. Verify the information and try again.',
+            'error_message' => 'Make sure all required information is valid.',
         ];
         return [
             [

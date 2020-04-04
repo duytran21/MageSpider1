@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Update;
 
-class CronReadinessCheckTest extends \PHPUnit\Framework\TestCase
+class CronReadinessCheckTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var bool
@@ -24,9 +24,6 @@ class CronReadinessCheckTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        if (!is_dir(MAGENTO_BP . '/var/')) {
-            mkdir(MAGENTO_BP . '/var/', 0777, true);
-        }
         $this->setupCronJobStatusFilePath = MAGENTO_BP . '/var/' . CronReadinessCheck::SETUP_CRON_JOB_STATUS_FILE;
         file_put_contents(
             $this->setupCronJobStatusFilePath,

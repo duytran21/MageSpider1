@@ -3,18 +3,12 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\Setup\Module\Di\Code\Reader;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\FileSystemException;
 
-/**
- * Class ClassesScanner
- *
- * @package Magento\Setup\Module\Di\Code\Reader
- */
 class ClassesScanner implements ClassesScannerInterface
 {
     /**
@@ -34,8 +28,7 @@ class ClassesScanner implements ClassesScannerInterface
 
     /**
      * @param array $excludePatterns
-     * @param DirectoryList|null $directoryList
-     * @throws FileSystemException
+     * @param string $generationDirectory
      */
     public function __construct(array $excludePatterns = [], DirectoryList $directoryList = null)
     {
@@ -67,7 +60,7 @@ class ClassesScanner implements ClassesScannerInterface
      */
     public function getList($path)
     {
-        // phpcs:ignore
+
         $realPath = realpath($path);
         $isGeneration = strpos($realPath, $this->generationDirectory) === 0;
 
@@ -76,9 +69,7 @@ class ClassesScanner implements ClassesScannerInterface
             return $this->fileResults[$realPath];
         }
         if (!(bool)$realPath) {
-            throw new FileSystemException(
-                new \Magento\Framework\Phrase('The "%1" path is invalid. Verify the path and try again.', [$path])
-            );
+            throw new FileSystemException(new \Magento\Framework\Phrase('Invalid path: %1', [$path]));
         }
         $recursiveIterator = new \RecursiveIteratorIterator(
             new \RecursiveDirectoryIterator($realPath, \FilesystemIterator::FOLLOW_SYMLINKS),
@@ -100,7 +91,7 @@ class ClassesScanner implements ClassesScannerInterface
      */
     private function extract(\RecursiveIteratorIterator $recursiveIterator)
     {
-        $classes = [[]];
+        $classes = [];
         foreach ($recursiveIterator as $fileItem) {
             /** @var $fileItem \SplFileInfo */
             if ($fileItem->isDir() || $fileItem->getExtension() !== 'php' || $fileItem->getBasename()[0] == '.') {
@@ -115,23 +106,20 @@ class ClassesScanner implements ClassesScannerInterface
             $fileScanner = new FileClassScanner($fileItemPath);
             $classNames = $fileScanner->getClassNames();
             $this->includeClasses($classNames, $fileItemPath);
-            $classes [] = $classNames;
+            $classes = array_merge($classes, $classNames);
         }
-        return array_merge(...$classes);
+        return $classes;
     }
 
     /**
-     * Include classes from file path
-     *
      * @param array $classNames
      * @param string $fileItemPath
-     * @return bool Whether the class is included or not
+     * @return bool Whether the clas is included or not
      */
     private function includeClasses(array $classNames, $fileItemPath)
     {
         foreach ($classNames as $className) {
             if (!class_exists($className)) {
-                // phpcs:ignore
                 require_once $fileItemPath;
                 return true;
             }

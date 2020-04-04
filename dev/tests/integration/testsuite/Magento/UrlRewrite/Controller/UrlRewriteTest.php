@@ -3,21 +3,13 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-declare(strict_types=1);
-
 namespace Magento\UrlRewrite\Controller;
 
-use Magento\TestFramework\TestCase\AbstractController;
-use Magento\Framework\App\Response\Http as HttpResponse;
-
-/**
- * Class to test Match corresponding URL Rewrite
- */
-class UrlRewriteTest extends AbstractController
+class UrlRewriteTest extends \Magento\TestFramework\TestCase\AbstractController
 {
     /**
      * @magentoDataFixture Magento/UrlRewrite/_files/url_rewrite.php
-     * @magentoDbIsolation disabled
+     * @magentoAppIsolation enabled
      *
      * @covers \Magento\UrlRewrite\Controller\Router::match
      * @covers \Magento\UrlRewrite\Model\Storage\DbStorage::doFindOneByData
@@ -25,35 +17,23 @@ class UrlRewriteTest extends AbstractController
      * @param string $request
      * @param string $redirect
      * @param int $expectedCode
-     * @return void
      *
      * @dataProvider requestDataProvider
      */
     public function testMatchUrlRewrite(
-        string $request,
-        string $redirect,
-        int $expectedCode = HttpResponse::STATUS_CODE_301
-    ): void {
+        $request,
+        $redirect,
+        $expectedCode = 301
+    ) {
         $this->dispatch($request);
-        /** @var HttpResponse $response */
-        $response = $this->getResponse();
-        $code = $response->getHttpResponseCode();
-        $this->assertEquals($expectedCode, $code, 'Invalid response code');
+        $code = $this->getResponse()->getHttpResponseCode();
+        $location = $this->getResponse()->getHeader('Location')->getFieldValue();
 
-        if ($expectedCode !== HttpResponse::STATUS_CODE_200) {
-            $location = $response->getHeader('Location')->getFieldValue();
-            $this->assertStringEndsWith(
-                $redirect,
-                $location,
-                'Invalid location header'
-            );
-        }
+        $this->assertEquals($expectedCode, $code, 'Invalid response code');
+        $this->assertStringEndsWith($redirect, $location, 'Invalid location header');
     }
 
-    /**
-     * @return array
-     */
-    public function requestDataProvider(): array
+    public function requestDataProvider()
     {
         return [
             'Use Case #1: Rewrite: page-one/ --(301)--> page-a/; Request: page-one/ --(301)--> page-a/' => [
@@ -80,39 +60,12 @@ class UrlRewriteTest extends AbstractController
                 'request' => '/page-similar/',
                 'redirect' => '/page-b',
             ],
-        ];
-    }
-
-    /**
-     * @magentoDbIsolation enabled
-     * @magentoConfigFixture default/catalog/seo/generate_category_product_rewrites 1
-     * @magentoDataFixture Magento/Catalog/_files/category_tree.php
-     * @dataProvider categoryRewriteProvider
-     * @param string $request
-     * @return void
-     */
-    public function testCategoryUrlRewrite(string $request): void
-    {
-        $this->dispatch($request);
-        $response = $this->getResponse();
-        $this->assertEquals(
-            HttpResponse::STATUS_CODE_200,
-            $response->getHttpResponseCode(),
-            'Response code does not match expected value'
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function categoryRewriteProvider(): array
-    {
-        return [
-            [
-                'category-1.html',
-                'category-1/category-1-1.html',
-                'category-1/category-1-1/category-1-1-1.html',
-            ],
+            'Use Case #7: Rewrite during stores switching' => [
+                'request' => '/page-c-on-2nd-store'
+                    . '?___store=default&___from_store=fixture_second_store',
+                'redirect' => '/page-c-on-1st-store',
+                'expectedCode' => 302
+            ]
         ];
     }
 }

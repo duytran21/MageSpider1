@@ -102,7 +102,7 @@ class Shipping extends Form
      *
      * @var string
      */
-    private $emailError = '#ustomer-email-error';
+    private $emailError = '#customer-email-error';
 
     /**
      * Get email error.

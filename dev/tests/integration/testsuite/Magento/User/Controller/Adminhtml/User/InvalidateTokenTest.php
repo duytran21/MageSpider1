@@ -4,6 +4,8 @@
  * See COPYING.txt for license details.
  */
 
+// @codingStandardsIgnoreFile
+
 namespace Magento\User\Controller\Adminhtml\User;
 
 use Magento\Framework\Message\MessageInterface;
@@ -11,8 +13,6 @@ use Magento\TestFramework\Helper\Bootstrap;
 
 /**
  * Test class for Magento\User\Controller\Adminhtml\User\InvalidateToken.
- *
- * @magentoAppArea adminhtml
  */
 class InvalidateTokenTest extends \Magento\TestFramework\TestCase\AbstractBackendController
 {
@@ -82,7 +82,7 @@ class InvalidateTokenTest extends \Magento\TestFramework\TestCase\AbstractBacken
     /**
      * @magentoDataFixture Magento/User/_files/user_with_role.php
      */
-    public function testInvalidateTokenNoTokens()
+    public function testInvalidateToken_NoTokens()
     {
         /** @var \Magento\User\Model\User $userModel */
         $userModel = Bootstrap::getObjectManager()->get(\Magento\User\Model\User::class);
@@ -91,9 +91,13 @@ class InvalidateTokenTest extends \Magento\TestFramework\TestCase\AbstractBacken
         // invalidate token
         $this->getRequest()->setParam('user_id', $adminUserId);
         $this->dispatch('backend/admin/user/invalidateToken');
+        $this->assertSessionMessages(
+            $this->equalTo(['This user has no tokens.']),
+            MessageInterface::TYPE_ERROR
+        );
     }
 
-    public function testInvalidateTokenNoUser()
+    public function testInvalidateToken_NoUser()
     {
         $this->dispatch('backend/admin/user/invalidateToken');
         $this->assertSessionMessages(
@@ -102,11 +106,15 @@ class InvalidateTokenTest extends \Magento\TestFramework\TestCase\AbstractBacken
         );
     }
 
-    public function testInvalidateTokenInvalidUser()
+    public function testInvalidateToken_InvalidUser()
     {
         $adminUserId = 999;
         // invalidate token
         $this->getRequest()->setParam('user_id', $adminUserId);
         $this->dispatch('backend/admin/user/invalidateToken');
+        $this->assertSessionMessages(
+            $this->equalTo(['This user has no tokens.']),
+            MessageInterface::TYPE_ERROR
+        );
     }
 }

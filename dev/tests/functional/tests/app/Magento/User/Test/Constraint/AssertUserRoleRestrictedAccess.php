@@ -10,7 +10,6 @@ use Magento\Backend\Test\Page\Adminhtml\Dashboard;
 use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\Constraint\AbstractConstraint;
 use Magento\User\Test\Fixture\User;
-use Magento\User\Test\TestStep\LoginUserOnBackendWithErrorStep;
 
 /**
  * Asserts that user has only related permissions.
@@ -18,8 +17,6 @@ use Magento\User\Test\TestStep\LoginUserOnBackendWithErrorStep;
 class AssertUserRoleRestrictedAccess extends AbstractConstraint
 {
     const DENIED_ACCESS = 'Sorry, you need permissions to view this content.';
-
-    protected $loginStep = 'Magento\User\Test\TestStep\LoginUserOnBackendStep';
 
     /**
      * Asserts that user has only related permissions.
@@ -39,16 +36,16 @@ class AssertUserRoleRestrictedAccess extends AbstractConstraint
         $denyUrl
     ) {
         $this->objectManager->create(
-            $this->loginStep,
+            \Magento\User\Test\TestStep\LoginUserOnBackendStep::class,
             ['user' => $user]
         )->run();
 
         $menuItems = $dashboard->getMenuBlock()->getTopMenuItems();
-        \PHPUnit\Framework\Assert::assertEquals($menuItems, $restrictedAccess, 'Wrong display menu.');
+        \PHPUnit_Framework_Assert::assertEquals($menuItems, $restrictedAccess, 'Wrong display menu.');
 
         $browser->open($_ENV['app_backend_url'] . $denyUrl);
         $deniedMessage = $dashboard->getAccessDeniedBlock()->getTextFromAccessDeniedBlock();
-        \PHPUnit\Framework\Assert::assertEquals(self::DENIED_ACCESS, $deniedMessage, 'Possible access to denied page.');
+        \PHPUnit_Framework_Assert::assertEquals(self::DENIED_ACCESS, $deniedMessage, 'Possible access to denied page.');
     }
 
     /**

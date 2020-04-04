@@ -94,8 +94,6 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 	.product-item {
 		width: 50%;
 		text-align: center;
-		padding: 10px;
-		margin:unset;
 		
 		.product-item-info{
 			.product-item-details {
@@ -114,18 +112,11 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 		}
 	}
 
-	@media only screen and (min-width: 768px){
-		.product-item {
-			width: 33.33333%;
-
-		}
-	}
-
 	@media only screen and (min-width: 1024px){
 		.product-item {
 			width: 25%;
 			padding: 0 10px;
-			
+			margin-left: 0;
 		}
 	}
 }
@@ -264,17 +255,12 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 
 /*====Hide Add To Cart=====*/
 .tocart {
-	/*display: none !important;*/
+	display: none !important;
 }
 
 /*==============Navigation Menu===========*/
 .nav-sections {
 	margin-bottom: 0;
-}
-.nav-open .nav-sections {
-	@media only screen and (max-width: 767px){
-		z-index: 1000;
-	}
 }
 
 /*==============Logo Header & Search Bar==============*/
@@ -314,7 +300,6 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 
 .header.content {
 	padding: 0px 20px;
-	z-index: 100;
 }
 
 /*==============Block Search=============*/
@@ -323,14 +308,14 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 	.label {
 		position: absolute;
 		top: 0;
-		right: 50px;
-		transform: translate(0%, 70%);
+		right: 0;
+		transform: translate(0%, 80%);
 	}
 	@media only screen and (min-width: 768px){
 		position: absolute;
 		top: 50%;
 		transform: translate(0%,-50%);
-		left: 0;
+		right: 20px;
 	}
 }
 
@@ -352,7 +337,6 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 .page-header .panel.wrapper {
 	background: #414042;
 	border-bottom: 1px solid #414042;
-	width: 100%;
 }
 
 @media only screen and (max-width: 767px){
@@ -513,8 +497,6 @@ a:active, .alink:active, a:hover, .alink:hover, a:visited, .alink:visited {
 		.block.newsletter {
 			width: 100%;
 			margin-top: 15px;
-			float: unset;
-			max-width: 100%;
 		}
 	}
 
@@ -762,13 +744,7 @@ a.disabled {
 	.product-add-form {
 		padding-top: 0;
 		@media only screen and (max-width: 767px){
-			margin-left: 0px;
-		}
-	}
-
-	.product-info-price {
-		@media only screen and (max-width: 767px){
-			margin-left: 0px;
+			margin-left: -10px;
 		}
 	}
 
@@ -794,8 +770,8 @@ a.disabled {
 .catalog-product-view {
 	.columns .column.main {
 		@media only screen and (max-width: 767px){
-			padding-left: 10px;
-			padding-right: 10px;
+			padding-left: 20px;
+			padding-right: 20px;
 		}
 	}
 }
@@ -886,12 +862,6 @@ a.disabled {
 		    }
 		}
 	}
-	@media only screen and (min-width: 768px){
-		position: absolute;
-		top:50%;
-		right: 80px;
-		transform: translate(0%, -70%);
-	}
 }
 
 .columns .sidebar-additional {
@@ -922,31 +892,4 @@ a.disabled {
 
 .strike-text {
 	text-decoration: line-through;
-}
-
-/*******Mini Cart*********/
-.minicart-wrapper {
-	position: absolute;
-	top:0;
-	right: 5px;
-	transform: translate(0%, 65%);
-	margin-top:0;
-	@media only screen and (min-width: 768px){
-		top:50%;
-		transform: translate(0%, -50%);
-		right: 20px;
-	}
-}
-
-.account .page.messages {
-	@media only screen and (max-width: 767px){
-		margin-bottom: 20px;
-		margin-top: 40px;
-	}
-}
-
-
-/******Checkout Container******/
-.checkout-container {
-	padding: 0 10px;
 }

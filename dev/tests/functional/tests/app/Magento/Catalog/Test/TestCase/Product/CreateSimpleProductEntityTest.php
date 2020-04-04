@@ -79,7 +79,6 @@ class CreateSimpleProductEntityTest extends Injectable
         $flushCache = false,
         $configData = null
     ) {
-
         $this->configData = $configData;
         $this->flushCache = $flushCache;
 

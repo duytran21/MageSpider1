@@ -28,11 +28,11 @@ class AssertAdditionalAddressCreatedFrontend extends AbstractConstraint
         $customerAccountIndex->getAccountMenuBlock()->openMenuItem('Address Book');
         $addressRenderer = $this->objectManager->create(
             \Magento\Customer\Test\Block\Address\Renderer::class,
-            ['address' => $shippingAddress, 'type' => 'html_without_company_separated_names']
+            ['address' => $shippingAddress, 'type' => 'html']
         )->render();
         $isAddressExists = $customerAccountIndex->getAdditionalAddressBlock()
             ->isAdditionalAddressExists($addressRenderer);
-        \PHPUnit\Framework\Assert::assertTrue(
+        \PHPUnit_Framework_Assert::assertTrue(
             $isAddressExists,
             'Customers address is absent in customer address book.'
         );

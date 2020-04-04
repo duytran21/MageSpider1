@@ -54,7 +54,6 @@ class CodeSniffer implements ToolInterface, ExtensionInterface
     public function __construct($rulesetDir, $reportFile, Wrapper $wrapper)
     {
         $this->rulesetDir = $rulesetDir;
-        // phpcs:ignore Magento2.Functions.DiscouragedFunction
         if (!file_exists($rulesetDir) && file_exists($fullPath = realpath(__DIR__ . '/../../../../' . $rulesetDir))) {
             $this->rulesetDir = $fullPath;
         }
@@ -63,7 +62,7 @@ class CodeSniffer implements ToolInterface, ExtensionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setExtensions(array $extensions)
     {
@@ -81,7 +80,7 @@ class CodeSniffer implements ToolInterface, ExtensionInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function run(array $whiteList)
     {
@@ -98,10 +97,10 @@ class CodeSniffer implements ToolInterface, ExtensionInterface
         $settings['files'] = $whiteList;
         $settings['standards'] = [$this->rulesetDir];
         $settings['extensions'] = $this->extensions;
+        $settings['warningSeverity'] = 0;
         $settings['reports']['full'] = $this->reportFile;
         $this->wrapper->setSettings($settings);
 
-        // phpcs:ignore Magento2.Functions.DiscouragedFunction
         ob_start();
         $result = $this->wrapper->runPHPCS();
         ob_end_clean();

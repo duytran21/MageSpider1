@@ -7,7 +7,6 @@ namespace Magento\CatalogImportExport\Model;
 
 use Magento\Framework\App\Bootstrap;
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Store\Model\Store;
 
 /**
  * Abstract class for testing product export and import scenarios
@@ -51,20 +50,9 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
         'custom_design_from',
         'updated_in',
         'tax_class_id',
-        'description',
-        'is_salable', // stock indexation is not performed during import
+        'description'
     ];
 
-    /**
-     * @var array
-     */
-    private static $attributesToRefresh = [
-        'tax_class_id',
-    ];
-
-    /**
-     * @inheritdoc
-     */
     protected function setUp()
     {
         $this->objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
@@ -75,89 +63,57 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
         \Magento\CatalogImportExport\Model\Import\Product\Type\AbstractType::$commonAttributesCache = [];
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function tearDown()
     {
-        $this->executeFixtures($this->fixtures, true);
+        $this->executeRollbackFixtures($this->fixtures);
     }
 
     /**
-     * Run import/export tests.
-     *
      * @magentoAppArea adminhtml
-     * @magentoDbIsolation disabled
+     * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      *
      * @param array $fixtures
      * @param string[] $skus
      * @param string[] $skippedAttributes
-     * @return void
      * @dataProvider exportImportDataProvider
      */
-    public function testImportExport(array $fixtures, array $skus, array $skippedAttributes = []): void
+    public function testExport($fixtures, $skus, $skippedAttributes = [])
     {
         $this->fixtures = $fixtures;
-        $this->executeFixtures($fixtures);
+        $this->executeFixtures($fixtures, $skus);
         $this->modifyData($skus);
         $skippedAttributes = array_merge(self::$skippedAttributes, $skippedAttributes);
-        $csvFile = $this->executeExportTest($skus, $skippedAttributes);
-
-        $this->executeImportReplaceTest($skus, $skippedAttributes, false, $csvFile);
-        $this->executeImportReplaceTest($skus, $skippedAttributes, true, $csvFile);
-        $this->executeImportDeleteTest($skus, $csvFile);
+        $this->executeExportTest($skus, $skippedAttributes);
     }
 
-    /**
-     * Provide data for import/export.
-     *
-     * @return array
-     */
-    abstract public function exportImportDataProvider(): array;
+    abstract public function exportImportDataProvider();
 
     /**
-     * Modify data.
-     *
      * @param array $skus
-     * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function modifyData(array $skus): void
+    protected function modifyData($skus)
     {
     }
 
     /**
-     * Prepare product.
-     *
      * @param \Magento\Catalog\Model\Product $product
-     * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function prepareProduct(\Magento\Catalog\Model\Product $product): void
+    public function prepareProduct($product)
     {
     }
 
-    /**
-     * Execute export test.
-     *
-     * @param array $skus
-     * @param array $skippedAttributes
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     */
-    protected function executeExportTest(array $skus, array $skippedAttributes): string
+    protected function executeExportTest($skus, $skippedAttributes)
     {
         $index = 0;
         $ids = [];
         $origProducts = [];
-        /** @var \Magento\CatalogInventory\Model\StockRegistryStorage $stockRegistryStorage */
-        $stockRegistryStorage = $this->objectManager->get(\Magento\CatalogInventory\Model\StockRegistryStorage::class);
-        /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productRepository */
-        $productRepository = $this->objectManager->get(\Magento\Catalog\Api\ProductRepositoryInterface::class);
         while (isset($skus[$index])) {
             $ids[$index] = $this->productResource->getIdBySku($skus[$index]);
-            $origProducts[$index] = $productRepository->get($skus[$index], false, Store::DEFAULT_STORE_ID);
+            $origProducts[$index] = $this->objectManager->create(\Magento\Catalog\Model\Product::class)
+                ->load($ids[$index]);
             $index++;
         }
 
@@ -166,8 +122,9 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
 
         while ($index > 0) {
             $index--;
-            $stockRegistryStorage->removeStockItem($ids[$index]);
-            $newProduct = $productRepository->get($skus[$index], false, Store::DEFAULT_STORE_ID, true);
+            $newProduct = $this->objectManager->create(\Magento\Catalog\Model\Product::class)
+                ->load($ids[$index]);
+
             // @todo uncomment or remove after MAGETWO-49806 resolved
             //$this->assertEquals(count($origProductData[$index]), count($newProductData));
 
@@ -179,23 +136,10 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
 
             $this->assertEqualsSpecificAttributes($origProducts[$index], $newProduct);
         }
-
-        return $csvfile;
     }
 
-    /**
-     * Assert data equals (ignore skipped attributes).
-     *
-     * @param array $expected
-     * @param array $actual
-     * @param array $skippedAttributes
-     * @return void
-     */
-    private function assertEqualsOtherThanSkippedAttributes(
-        array $expected,
-        array $actual,
-        array $skippedAttributes
-    ): void {
+    private function assertEqualsOtherThanSkippedAttributes($expected, $actual, $skippedAttributes)
+    {
         foreach ($expected as $key => $value) {
             if (is_object($value) || in_array($key, $skippedAttributes)) {
                 continue;
@@ -210,110 +154,150 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
     }
 
     /**
-     * Execute import test with delete behavior.
+     * @magentoAppArea adminhtml
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
      *
-     * @param array $skus
-     * @param string|null $csvFile
-     * @return void
+     * @param array $fixtures
+     * @param string[] $skus
+     * @dataProvider exportImportDataProvider
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function executeImportDeleteTest(array $skus, string $csvFile = null): void
+    public function testImportDelete($fixtures, $skus, $skippedAttributes = [])
     {
-        $csvFile = $csvFile ?? $this->exportProducts();
-        $this->importProducts($csvFile, \Magento\ImportExport\Model\Import::BEHAVIOR_DELETE);
+        $this->fixtures = $fixtures;
+        $this->executeFixtures($fixtures, $skus);
+        $this->modifyData($skus);
+        $this->executeImportDeleteTest($skus);
+    }
+
+    protected function executeImportDeleteTest($skus)
+    {
+        $csvfile = $this->exportProducts();
+        $this->importProducts($csvfile, \Magento\ImportExport\Model\Import::BEHAVIOR_DELETE);
+        /** @var \Magento\Catalog\Model\Product $product */
+        $product = $this->objectManager->create(\Magento\Catalog\Model\Product::class);
         foreach ($skus as $sku) {
             $productId = $this->productResource->getIdBySku($sku);
-            $this->assertFalse($productId);
+            $product->load($productId);
+            $this->assertNull($product->getId());
         }
     }
 
     /**
-     * Execute fixtures.
+     * Execute fixtures
      *
+     * @param array $skus
      * @param array $fixtures
-     * @param bool $rollback
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function executeFixtures(array $fixtures, bool $rollback = false)
+    protected function executeFixtures($fixtures, $skus = [])
     {
         foreach ($fixtures as $fixture) {
-            $fixturePath = $this->resolveFixturePath($fixture, $rollback);
+            $fixturePath = $this->fileSystem->getDirectoryRead(DirectoryList::ROOT)
+                ->getAbsolutePath('/dev/tests/integration/testsuite/' . $fixture);
             include $fixturePath;
         }
     }
 
     /**
-     * Resolve fixture path.
+     * Execute rollback fixtures
      *
-     * @param string $fixture
-     * @param bool $rollback
-     * @return string
+     * @param array $fixtures
+     * @return void
      */
-    private function resolveFixturePath(string $fixture, bool $rollback = false)
+    private function executeRollbackFixtures($fixtures)
     {
-        $fixturePath = $this->fileSystem->getDirectoryRead(DirectoryList::ROOT)
-            ->getAbsolutePath('/dev/tests/integration/testsuite/' . $fixture);
-        if ($rollback) {
+        foreach ($fixtures as $fixture) {
+            $fixturePath = $this->fileSystem->getDirectoryRead(DirectoryList::ROOT)
+                ->getAbsolutePath('/dev/tests/integration/testsuite/' . $fixture);
             $fileInfo = pathinfo($fixturePath);
             $extension = '';
             if (isset($fileInfo['extension'])) {
                 $extension = '.' . $fileInfo['extension'];
             }
-            $fixturePath = $fileInfo['dirname'] . '/' . $fileInfo['filename'] . '_rollback' . $extension;
+            $rollbackfixturePath = $fileInfo['dirname'] . '/' . $fileInfo['filename'] . '_rollback' . $extension;
+            if (file_exists($rollbackfixturePath)) {
+                include $rollbackfixturePath;
+            }
         }
-
-        return $fixturePath;
     }
 
     /**
-     * Assert that specific attributes equal.
-     *
      * @param \Magento\Catalog\Model\Product $expectedProduct
      * @param \Magento\Catalog\Model\Product $actualProduct
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function assertEqualsSpecificAttributes(
-        \Magento\Catalog\Model\Product $expectedProduct,
-        \Magento\Catalog\Model\Product $actualProduct
-    ): void {
+    protected function assertEqualsSpecificAttributes($expectedProduct, $actualProduct)
+    {
         // check custom options
     }
 
     /**
-     * Execute import test with replace behavior.
+     * @magentoAppArea adminhtml
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
      *
+     * @param array $fixtures
+     * @param string[] $skus
+     * @param string[] $skippedAttributes
+     * @dataProvider importReplaceDataProvider
+     */
+    public function testImportReplace($fixtures, $skus, $skippedAttributes = [])
+    {
+        $this->fixtures = $fixtures;
+        $this->executeFixtures($fixtures, $skus);
+        $this->modifyData($skus);
+        $skippedAttributes = array_merge(self::$skippedAttributes, $skippedAttributes);
+        $this->executeImportReplaceTest($skus, $skippedAttributes);
+    }
+
+    /**
+     * @magentoAppArea adminhtml
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     *
+     * @param array $fixtures
+     * @param string[] $skus
+     * @param string[] $skippedAttributes
+     * @dataProvider importReplaceDataProvider
+     */
+    public function testImportReplaceWithPagination($fixtures, $skus, $skippedAttributes = [])
+    {
+        $this->fixtures = $fixtures;
+        $this->executeFixtures($fixtures, $skus);
+        $this->modifyData($skus);
+        $skippedAttributes = array_merge(self::$skippedAttributes, $skippedAttributes);
+        $this->executeImportReplaceTest($skus, $skippedAttributes, true);
+    }
+
+    /**
      * @param string[] $skus
      * @param string[] $skippedAttributes
      * @param bool $usePagination
-     * @param string|null $csvfile
-     * @return void
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    protected function executeImportReplaceTest(
-        $skus,
-        $skippedAttributes,
-        $usePagination = false,
-        string $csvfile = null
-    ) {
+    protected function executeImportReplaceTest($skus, $skippedAttributes, $usePagination = false)
+    {
         $replacedAttributes = [
             'row_id',
             'entity_id',
             'tier_price',
+            'is_salable',
             'media_gallery'
         ];
         $skippedAttributes = array_merge($replacedAttributes, $skippedAttributes);
-        $this->cleanAttributesCache();
 
         $index = 0;
         $ids = [];
         $origProducts = [];
-        /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productRepository */
-        $productRepository = $this->objectManager->create(\Magento\Catalog\Api\ProductRepositoryInterface::class);
         while (isset($skus[$index])) {
             $ids[$index] = $this->productResource->getIdBySku($skus[$index]);
-            $origProducts[$index] = $productRepository->get($skus[$index], false, Store::DEFAULT_STORE_ID);
+            $origProducts[$index] = $this->objectManager->create(\Magento\Catalog\Model\Product::class)
+                ->load($ids[$index]);
             $index++;
         }
 
@@ -328,15 +312,18 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
             $itemsPerPageProperty->setValue($exportProduct, 1);
         }
 
-        $csvfile = $csvfile ?? $this->exportProducts($exportProduct);
+        $csvfile = $this->exportProducts($exportProduct);
         $this->importProducts($csvfile, \Magento\ImportExport\Model\Import::BEHAVIOR_REPLACE);
 
         while ($index > 0) {
             $index--;
-            $newProduct = $productRepository->get($skus[$index], false, Store::DEFAULT_STORE_ID, true);
+
+            $id = $this->productResource->getIdBySku($skus[$index]);
+            $newProduct = $this->objectManager->create(\Magento\Catalog\Model\Product::class)->load($id);
+
             // check original product is deleted
-            $productId = $this->productResource->getIdBySku($ids[$index]);
-            $this->assertFalse($productId);
+            $origProduct = $this->objectManager->create(\Magento\Catalog\Model\Product::class)->load($ids[$index]);
+            $this->assertNull($origProduct->getId());
 
             // check new product data
             // @todo uncomment or remove after MAGETWO-49806 resolved
@@ -354,7 +341,7 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
                         array_filter($origProductData[$attribute]) :
                         $origProductData[$attribute];
                     if (!empty($expected)) {
-                        $actual = $newProductData[$attribute] ?? null;
+                        $actual = isset($newProductData[$attribute]) ? $newProductData[$attribute] : null;
                         $actual = is_array($actual) ? array_filter($actual) : $actual;
                         $this->assertNotEquals($expected, $actual, $attribute . ' is expected to be changed');
                     }
@@ -364,7 +351,7 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
     }
 
     /**
-     * Export products in the system.
+     * Export products in the system
      *
      * @param \Magento\CatalogImportExport\Model\Export\Product|null $exportProduct
      * @return string Return exported file name
@@ -383,18 +370,17 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
             )
         );
         $this->assertNotEmpty($exportProduct->export());
-
         return $csvfile;
     }
 
     /**
-     * Import products from the given file.
+     * Import products from the given file
      *
      * @param string $csvfile
      * @param string $behavior
      * @return void
      */
-    private function importProducts(string $csvfile, string $behavior): void
+    private function importProducts($csvfile, $behavior)
     {
         /** @var \Magento\CatalogImportExport\Model\Import\Product $importModel */
         $importModel = $this->objectManager->create(
@@ -450,33 +436,15 @@ abstract class AbstractProductExportImportTestCase extends \PHPUnit\Framework\Te
     }
 
     /**
-     * Extract error message.
-     *
      * @param \Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingError[] $errors
      * @return string
      */
-    private function extractErrorMessage(array $errors): string
+    private function extractErrorMessage($errors)
     {
         $errorMessage = '';
         foreach ($errors as $error) {
             $errorMessage = "\n" . $error->getErrorMessage();
         }
-
         return $errorMessage;
-    }
-
-    /**
-     * Clean import attribute cache.
-     *
-     * @return void
-     */
-    private function cleanAttributesCache(): void
-    {
-        foreach (self::$attributesToRefresh as $attributeCode) {
-            $attributeId = Import\Product\Type\AbstractType::$attributeCodeToId[$attributeCode] ?? null;
-            if ($attributeId !== null) {
-                unset(Import\Product\Type\AbstractType::$commonAttributesCache[$attributeId]);
-            }
-        }
     }
 }

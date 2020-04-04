@@ -11,7 +11,6 @@
         <deny>
             <tag group="stable" value="no" />
             <tag group="to_maintain" value="yes" />
-            <tag group="mftf_migrated" value="yes" />
         </deny>
     </rule>
     <rule scope="testsuite">
@@ -22,9 +21,8 @@
     </rule>
     <rule scope="variation">
         <deny>
-            <tag group="test_type" value="3rd_party_test, 3rd_party_test_single_flow, mysql_search" />
+            <tag group="test_type" value="3rd_party_test, 3rd_party_test_single_flow" />
             <tag group="stable" value="no" />
-            <tag group="mftf_migrated" value="yes" />
             <tag group="to_maintain" value="yes" />
         </deny>
     </rule>

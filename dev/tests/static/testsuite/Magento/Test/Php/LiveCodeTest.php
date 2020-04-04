@@ -3,7 +3,8 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-declare(strict_types=1);
+
+// @codingStandardsIgnoreFile
 
 namespace Magento\Test\Php;
 
@@ -12,7 +13,6 @@ use Magento\TestFramework\CodingStandard\Tool\CodeMessDetector;
 use Magento\TestFramework\CodingStandard\Tool\CodeSniffer;
 use Magento\TestFramework\CodingStandard\Tool\CodeSniffer\Wrapper;
 use Magento\TestFramework\CodingStandard\Tool\CopyPasteDetector;
-use Magento\TestFramework\CodingStandard\Tool\PhpCompatibility;
 use PHPMD\TextUI\Command;
 
 /**
@@ -70,28 +70,19 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
      * @param array $fileTypes
      * @param string $changedFilesBaseDir
      * @param string $baseFilesFolder
-     * @param string $whitelistFile
      * @return array
      */
-    public static function getWhitelist(
-        $fileTypes = ['php'],
-        $changedFilesBaseDir = '',
-        $baseFilesFolder = '',
-        $whitelistFile = '/_files/whitelist/common.txt'
-    ) {
+    public static function getWhitelist($fileTypes = ['php'], $changedFilesBaseDir = '', $baseFilesFolder = '')
+    {
         $changedFiles = self::getChangedFilesList($changedFilesBaseDir);
         if (empty($changedFiles)) {
             return [];
         }
 
         $globPatternsFolder = ('' !== $baseFilesFolder) ? $baseFilesFolder : self::getBaseFilesFolder();
-        try {
-            $directoriesToCheck = Files::init()->readLists($globPatternsFolder . $whitelistFile);
-        } catch (\Exception $e) {
-            // no directories matched white list
-            return [];
-        }
+        $directoriesToCheck = Files::init()->readLists($globPatternsFolder . '/_files/whitelist/common.txt');
         $targetFiles = self::filterFiles($changedFiles, $fileTypes, $directoriesToCheck);
+
         return $targetFiles;
     }
 
@@ -112,78 +103,30 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
      */
     private static function getChangedFilesList($changedFilesBaseDir)
     {
-        return self::getFilesFromListFile(
-            $changedFilesBaseDir,
-            'changed_files*',
-            function () {
-                // if no list files, probably, this is the dev environment
-                // phpcs:disable Generic.PHP.NoSilencedErrors,Magento2.Security.InsecureFunction
-                @exec('git diff --name-only', $changedFiles);
-                @exec('git diff --cached --name-only', $addedFiles);
-                // phpcs:enable
-                $changedFiles = array_unique(array_merge($changedFiles, $addedFiles));
-                return $changedFiles;
-            }
-        );
-    }
+        $changedFiles = [];
 
-    /**
-     * This method loads list of added files.
-     *
-     * @param string $changedFilesBaseDir
-     * @return string[]
-     */
-    private static function getAddedFilesList($changedFilesBaseDir)
-    {
-        return self::getFilesFromListFile(
-            $changedFilesBaseDir,
-            'changed_files*.added.*',
-            function () {
-                // if no list files, probably, this is the dev environment
-                // phpcs:ignore Generic.PHP.NoSilencedErrors,Magento2.Security.InsecureFunction
-                @exec('git diff --cached --name-only', $addedFiles);
-                return $addedFiles;
-            }
-        );
-    }
-
-    /**
-     * Read files from generated lists.
-     *
-     * @param string $listsBaseDir
-     * @param string $listFilePattern
-     * @param callable $noListCallback
-     * @return string[]
-     */
-    private static function getFilesFromListFile($listsBaseDir, $listFilePattern, $noListCallback)
-    {
-        $filesDefinedInList = [];
-
-        $globFilesListPattern = ($listsBaseDir ?: self::getChangedFilesBaseDir())
-            . '/_files/' . $listFilePattern;
+        $globFilesListPattern = ($changedFilesBaseDir ?: self::getChangedFilesBaseDir()) . '/_files/changed_files*';
         $listFiles = glob($globFilesListPattern);
-        if (!empty($listFiles)) {
+        if (count($listFiles)) {
             foreach ($listFiles as $listFile) {
-                // phpcs:ignore Magento2.Performance.ForeachArrayMerge.ForeachArrayMerge
-                $filesDefinedInList = array_merge(
-                    $filesDefinedInList,
+                $changedFiles = array_merge(
+                    $changedFiles,
                     file($listFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)
                 );
             }
         } else {
-            $filesDefinedInList = call_user_func($noListCallback);
+            // if no list files, probably, this is the dev environment
+            @exec('git diff --name-only', $changedFiles);
         }
 
         array_walk(
-            $filesDefinedInList,
+            $changedFiles,
             function (&$file) {
                 $file = BP . '/' . $file;
             }
         );
 
-        $filesDefinedInList = array_values(array_unique($filesDefinedInList));
-
-        return $filesDefinedInList;
+        return $changedFiles;
     }
 
     /**
@@ -219,12 +162,9 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
             };
         } else {
             $allowedDirectories = array_map('realpath', $allowedDirectories);
-            usort(
-                $allowedDirectories,
-                function ($dir1, $dir2) {
-                    return strlen($dir1) - strlen($dir2);
-                }
-            );
+            usort($allowedDirectories, function ($dir1, $dir2) {
+                return strlen($dir1) - strlen($dir2);
+            });
             $fileIsInAllowedDirectory = function ($file) use ($allowedDirectories) {
                 foreach ($allowedDirectories as $directory) {
                     if (strpos($file, $directory) === 0) {
@@ -256,89 +196,20 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
      */
     private function getFullWhitelist()
     {
-        try {
-            return Files::init()->readLists(__DIR__ . '/_files/whitelist/common.txt');
-        } catch (\Exception $e) {
-            // nothing is whitelisted
-            return [];
-        }
+        return Files::init()->readLists(__DIR__ . '/_files/whitelist/common.txt');
     }
 
-    /**
-     * Retrieves the lowest PHP version specified in <kbd>composer.json</var> of project.
-     *
-     * @return string
-     */
-    private function getLowestPhpVersion(): string
-    {
-        $composerJson = json_decode(file_get_contents(BP . '/composer.json'), true);
-        $phpVersion   = '7.0';
-
-        if (isset($composerJson['require']['php'])) {
-            $versions = explode('||', $composerJson['require']['php']);
-
-            //normalize version constraints
-            foreach ($versions as $key => $version) {
-                $version = ltrim($version, '^~');
-                $version = str_replace('*', '999', $version);
-
-                $versions[$key] = $version;
-            }
-
-            //sort versions
-            usort($versions, 'version_compare');
-
-            $lowestVersion = array_shift($versions);
-            $versionParts  = explode('.', $lowestVersion);
-            $phpVersion    = sprintf('%s.%s', $versionParts[0], $versionParts[1] ?? '0');
-        }
-
-        return $phpVersion;
-    }
-
-    /**
-     * Returns whether a full scan was requested.
-     *
-     * This can be set in the `phpunit.xml` used to run these test cases, by setting the constant
-     * `TESTCODESTYLE_IS_FULL_SCAN` to `1`, e.g.:
-     * ```xml
-     * <php>
-     *     <!-- TESTCODESTYLE_IS_FULL_SCAN - specify if full scan should be performed for test code style test -->
-     *     <const name="TESTCODESTYLE_IS_FULL_SCAN" value="0"/>
-     * </php>
-     * ```
-     *
-     * @return bool
-     */
-    private function isFullScan(): bool
-    {
-        return defined('TESTCODESTYLE_IS_FULL_SCAN') && TESTCODESTYLE_IS_FULL_SCAN === '1';
-    }
-
-    /**
-     * Test code quality using phpcs
-     */
     public function testCodeStyle()
     {
         $reportFile = self::$reportDir . '/phpcs_report.txt';
-        if (!file_exists($reportFile)) {
-            touch($reportFile);
-        }
         $codeSniffer = new CodeSniffer('Magento', $reportFile, new Wrapper());
-        $result = $codeSniffer->run(
-            $this->isFullScan() ? $this->getFullWhitelist() : self::getWhitelist(['php', 'phtml'])
-        );
-        $report = file_get_contents($reportFile);
         $this->assertEquals(
             0,
-            $result,
-            "PHP Code Sniffer detected {$result} violation(s): " . PHP_EOL . $report
+            $result = $codeSniffer->run($this->getFullWhitelist()),
+            "PHP Code Sniffer detected {$result} violation(s): " . PHP_EOL . file_get_contents($reportFile)
         );
     }
 
-    /**
-     * Test code quality using phpmd
-     */
     public function testCodeMess()
     {
         $reportFile = self::$reportDir . '/phpmd_report.txt';
@@ -367,9 +238,6 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
         }
     }
 
-    /**
-     * Test code quality using phpcpd
-     */
     public function testCopyPaste()
     {
         $reportFile = self::$reportDir . '/phpcpd_report.xml';
@@ -381,7 +249,6 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
 
         $blackList = [];
         foreach (glob(__DIR__ . '/_files/phpcpd/blacklist/*.txt') as $list) {
-            // phpcs:ignore Magento2.Performance.ForeachArrayMerge.ForeachArrayMerge
             $blackList = array_merge($blackList, file($list, FILE_IGNORE_NEW_LINES));
         }
 
@@ -397,72 +264,6 @@ class LiveCodeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(
             $result,
             "PHP Copy/Paste Detector has found error(s):" . PHP_EOL . $output
-        );
-    }
-
-    /**
-     * Tests whitelisted files for strict type declarations.
-     */
-    public function testStrictTypes()
-    {
-        $changedFiles = self::getAddedFilesList('');
-
-        try {
-            $blackList = Files::init()->readLists(
-                self::getBaseFilesFolder() . '/_files/blacklist/strict_type.txt'
-            );
-        } catch (\Exception $e) {
-            // nothing matched black list
-            $blackList = [];
-        }
-
-        $toBeTestedFiles = array_diff(
-            self::filterFiles($changedFiles, ['php'], []),
-            $blackList
-        );
-
-        $filesMissingStrictTyping = [];
-        foreach ($toBeTestedFiles as $fileName) {
-            $file = file_get_contents($fileName);
-            if (strstr($file, 'strict_types=1') === false) {
-                $filesMissingStrictTyping[] = $fileName;
-            }
-        }
-
-        $this->assertEquals(
-            0,
-            count($filesMissingStrictTyping),
-            "Following files are missing strict type declaration:"
-            . PHP_EOL
-            . implode(PHP_EOL, $filesMissingStrictTyping)
-        );
-    }
-
-    /**
-     * Test for compatibility to lowest PHP version declared in <kbd>composer.json</kbd>.
-     */
-    public function testPhpCompatibility()
-    {
-        $targetVersion = $this->getLowestPhpVersion();
-        $reportFile    = self::$reportDir . '/phpcompatibility_report.txt';
-        $rulesetDir    = __DIR__ . '/_files/PHPCompatibilityMagento';
-
-        if (!file_exists($reportFile)) {
-            touch($reportFile);
-        }
-
-        $codeSniffer = new PhpCompatibility($rulesetDir, $reportFile, new Wrapper());
-        $codeSniffer->setTestVersion($targetVersion);
-
-        $result = $codeSniffer->run(
-            $this->isFullScan() ? $this->getFullWhitelist() : self::getWhitelist(['php', 'phtml'])
-        );
-        $report = file_get_contents($reportFile);
-
-        $this->assertEquals(
-            0,
-            $result,
-            'PHP Compatibility detected violation(s):' . PHP_EOL . $report
         );
     }
 }

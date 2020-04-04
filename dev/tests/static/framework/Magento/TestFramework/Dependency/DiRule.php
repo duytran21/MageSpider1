@@ -7,13 +7,11 @@
  */
 namespace Magento\TestFramework\Dependency;
 
-use Magento\Framework\App\Utility\Classes;
+use DOMDocument;
+use DOMXPath;
 use Magento\Framework\App\Utility\Files;
 use Magento\TestFramework\Dependency\VirtualType\VirtualTypeMapper;
 
-/**
- * Class provide dependency rule for di.xml config files.
- */
 class DiRule implements RuleInterface
 {
     /**
@@ -35,8 +33,6 @@ class DiRule implements RuleInterface
     }
 
     /**
-     * Get class name pattern.
-     *
      * @return string
      * @throws \Exception
      */
@@ -44,7 +40,7 @@ class DiRule implements RuleInterface
     {
         if ($this->pattern === null) {
             $this->pattern = '~\b(?<class>(?<module>('
-                . implode('[_\\\\]|', Files::init()->getNamespaces())
+                . implode('_|', Files::init()->getNamespaces())
                 . '[_\\\\])[a-zA-Z0-9]+)[a-zA-Z0-9_\\\\]*)\b~';
         }
 
@@ -77,7 +73,6 @@ class DiRule implements RuleInterface
      */
     public function getDependencyInfo($currentModule, $fileType, $file, &$contents)
     {
-        //phpcs:ignore Magento2.Functions.DiscouragedFunction
         if (pathinfo($file, PATHINFO_BASENAME) !== 'di.xml') {
             return [];
         }
@@ -104,14 +99,12 @@ class DiRule implements RuleInterface
     }
 
     /**
-     * Fetch all possible dependencies.
-     *
      * @param string $contents
      * @return array
      */
     private function fetchPossibleDependencies($contents)
     {
-        $doc = new \DOMDocument();
+        $doc = new DOMDocument();
         $doc->loadXML($contents);
         return [
             RuleInterface::TYPE_SOFT => $this->getSoftDependencies($doc),
@@ -120,22 +113,16 @@ class DiRule implements RuleInterface
     }
 
     /**
-     * Collect soft dependencies.
-     *
-     * @param \DOMDocument $doc
+     * @param DOMDocument $doc
      * @return array
      */
-    private function getSoftDependencies(\DOMDocument $doc)
+    private function getSoftDependencies(DOMDocument $doc)
     {
         $result = [];
         foreach (self::$tagNameMap as $tagName => $attributeNames) {
             $nodes = $doc->getElementsByTagName($tagName);
         /** @var \DOMElement $node */
             foreach ($nodes as $node) {
-                if ($tagName === 'virtualType' && !$node->getAttribute('type')) {
-                    $result[] = Classes::resolveVirtualType($node->getAttribute('name'));
-                    continue;
-                }
                 foreach ($attributeNames as $attributeName) {
                     $result[] = $node->getAttribute($attributeName);
                 }
@@ -146,15 +133,13 @@ class DiRule implements RuleInterface
     }
 
     /**
-     * Collect hard dependencies.
-     *
-     * @param \DOMDocument $doc
+     * @param DOMDocument $doc
      * @return array
      */
-    private function getHardDependencies(\DOMDocument $doc)
+    private function getHardDependencies(DOMDocument $doc)
     {
         $result = [];
-        $xpath = new \DOMXPath($doc);
+        $xpath = new DOMXPath($doc);
         $textNodes = $xpath->query('//*[@xsi:type="object"]');
         /** @var \DOMElement $node */
         foreach ($textNodes as $node) {

@@ -12,7 +12,7 @@ require.config({
     }
 });
 
-define(['squire', 'ko', 'jquery', 'uiRegistry', 'jquery/validate'], function (Squire, ko, $, registry) {
+define(['squire', 'ko', 'jquery', 'jquery/validate'], function (Squire, ko, $) {
     'use strict';
 
     var injector = new Squire(),
@@ -28,17 +28,7 @@ define(['squire', 'ko', 'jquery', 'uiRegistry', 'jquery/validate'], function (Sq
             'Magento_Checkout/js/model/address-converter': jasmine.createSpy(),
             'Magento_Checkout/js/model/quote': {
                 isVirtual: jasmine.createSpy(),
-                shippingMethod: ko.observable(),
-
-                /**
-                 * Stub
-                 */
-                shippingAddress: function () {
-
-                    return {
-                        'countryId': 'AD'
-                    };
-                }
+                shippingMethod: ko.observable()
             },
             'Magento_Checkout/js/action/create-shipping-address': jasmine.createSpy().and.returnValue(
                 jasmine.createSpyObj('newShippingAddress', ['getKey'])
@@ -62,7 +52,7 @@ define(['squire', 'ko', 'jquery', 'uiRegistry', 'jquery/validate'], function (Sq
                 'checkoutData',
                 ['setSelectedShippingAddress', 'setNewCustomerShippingAddress', 'setSelectedShippingRate']
             ),
-            'Magento_Ui/js/lib/registry/registry': registry,
+            'uiRegistry': jasmine.createSpy(),
             'Magento_Checkout/js/model/shipping-rate-service': jasmine.createSpy()
         },
         obj;
@@ -73,7 +63,6 @@ define(['squire', 'ko', 'jquery', 'uiRegistry', 'jquery/validate'], function (Sq
             obj = new Constr({
                 provider: 'provName',
                 name: '',
-                parentName: 'test',
                 index: '',
                 popUpForm: {
                     options: {
@@ -86,13 +75,6 @@ define(['squire', 'ko', 'jquery', 'uiRegistry', 'jquery/validate'], function (Sq
             });
             done();
         });
-    });
-
-    afterEach(function () {
-        try {
-            injector.clean();
-            injector.remove();
-        } catch (e) {}
     });
 
     describe('Magento_Checkout/js/view/shipping', function () {
@@ -167,26 +149,12 @@ define(['squire', 'ko', 'jquery', 'uiRegistry', 'jquery/validate'], function (Sq
 
         describe('"setShippingInformation" method', function () {
             it('Check method call.', function () {
-                spyOn(obj, 'validateShippingInformation').and.returnValue(false);
                 expect(obj.setShippingInformation()).toBeUndefined();
             });
         });
 
         describe('"validateShippingInformation" method', function () {
             it('Check method call on negative cases.', function () {
-                var country = {
-                    'indexedOptions': {
-                        'AD':
-                            {
-                                label: 'Andorra',
-                                labeltitle: 'Andorra',
-                                value: 'AD'
-                            }
-                    }
-                };
-
-                registry.set('test.shippingAddress.shipping-address-fieldset.country_id', country);
-                registry.set('checkout.errors', {});
                 obj.source = {
                     get: jasmine.createSpy().and.returnValue(true),
                     set: jasmine.createSpy(),
@@ -194,9 +162,7 @@ define(['squire', 'ko', 'jquery', 'uiRegistry', 'jquery/validate'], function (Sq
                 };
 
                 expect(obj.validateShippingInformation()).toBeFalsy();
-                expect(obj.errorValidationMessage()).toBe(
-                    'The shipping method is missing. Select the shipping method and try again.'
-                );
+                expect(obj.errorValidationMessage()).toBe('Please specify a shipping method.');
                 spyOn(mocks['Magento_Checkout/js/model/quote'], 'shippingMethod').and.returnValue(true);
                 spyOn(mocks['Magento_Customer/js/model/customer'], 'isLoggedIn').and.returnValue(true);
                 expect(obj.validateShippingInformation()).toBeFalsy();

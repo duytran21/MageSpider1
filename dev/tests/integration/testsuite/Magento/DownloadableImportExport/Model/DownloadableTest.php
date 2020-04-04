@@ -9,10 +9,7 @@ use Magento\CatalogImportExport\Model\AbstractProductExportImportTestCase;
 
 class DownloadableTest extends AbstractProductExportImportTestCase
 {
-    /**
-     * @return array
-     */
-    public function exportImportDataProvider(): array
+    public function exportImportDataProvider()
     {
         return [
             'downloadable-product' => [
@@ -34,32 +31,79 @@ class DownloadableTest extends AbstractProductExportImportTestCase
         ];
     }
 
+    public function importReplaceDataProvider()
+    {
+        return $this->exportImportDataProvider();
+    }
+
     /**
-     * Run import/export tests.
-     *
-     * @magentoAppArea adminhtml
-     * @magentoDbIsolation disabled
-     * @magentoAppIsolation enabled
-     *
      * @param array $fixtures
      * @param string[] $skus
      * @param string[] $skippedAttributes
-     * @return void
      * @dataProvider exportImportDataProvider
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @todo remove after MAGETWO-38240 resolved
      */
-    public function testImportExport(array $fixtures, array $skus, array $skippedAttributes = []): void
+    public function testExport($fixtures, $skus, $skippedAttributes = [], $rollbackFixtures = [])
     {
         $this->markTestSkipped('Uncomment after MAGETWO-38240 resolved');
     }
 
     /**
-     * @inheritdoc
+     * @param array $fixtures
+     * @param string[] $skus
+     * @dataProvider exportImportDataProvider
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @todo remove after MAGETWO-38240 resolved
      */
-    protected function assertEqualsSpecificAttributes(
-        \Magento\Catalog\Model\Product $expectedProduct,
-        \Magento\Catalog\Model\Product $actualProduct
-    ): void {
+    public function testImportDelete($fixtures, $skus, $skippedAttributes = [], $rollbackFixtures = [])
+    {
+        $this->markTestSkipped('Uncomment after MAGETWO-38240 resolved');
+    }
+
+    /**
+     * @magentoAppArea adminhtml
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     *
+     * @param array $fixtures
+     * @param string[] $skus
+     * @param string[] $skippedAttributes
+     * @dataProvider importReplaceDataProvider
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     *
+     * @todo remove after MAGETWO-38240 resolved
+     */
+    public function testImportReplace($fixtures, $skus, $skippedAttributes = [], $rollbackFixtures = [])
+    {
+        $this->markTestSkipped('Uncomment after MAGETWO-38240 resolved');
+    }
+
+    /**
+     * @magentoAppArea adminhtml
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     *
+     * @param array $fixtures
+     * @param string[] $skus
+     * @param string[] $skippedAttributes
+     * @dataProvider importReplaceDataProvider
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function testImportReplaceWithPagination($fixtures, $skus, $skippedAttributes = [])
+    {
+        $this->markTestSkipped('Uncomment after MAGETWO-38240 resolved');
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\Product $expectedProduct
+     * @param \Magento\Catalog\Model\Product $actualProduct
+     */
+    protected function assertEqualsSpecificAttributes($expectedProduct, $actualProduct)
+    {
         $expectedProductLinks   = $expectedProduct->getExtensionAttributes()->getDownloadableProductLinks();
         $expectedProductSamples = $expectedProduct->getExtensionAttributes()->getDownloadableProductSamples();
 

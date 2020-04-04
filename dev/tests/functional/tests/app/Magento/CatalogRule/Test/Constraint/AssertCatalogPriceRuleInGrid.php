@@ -19,7 +19,7 @@ class AssertCatalogPriceRuleInGrid extends AbstractConstraint
      * Fields used to filter rows in the grid.
      * @var array
      */
-    protected $fieldsToFilter = ['name'];
+    protected $fieldsToFilter = ['name', 'is_active'];
 
     /**
      * Assert that data in grid on Catalog Price Rules page according to fixture
@@ -57,7 +57,7 @@ class AssertCatalogPriceRuleInGrid extends AbstractConstraint
 
         $pageCatalogRuleIndex->open();
         $errorMessage = implode(', ', $filter);
-        \PHPUnit\Framework\Assert::assertTrue(
+        \PHPUnit_Framework_Assert::assertTrue(
             $pageCatalogRuleIndex->getCatalogRuleGrid()->isRowVisible($filter),
             'Catalog Price Rule with following data: \'' . $errorMessage . '\' '
             . 'is absent in Catalog Price Rule grid.'

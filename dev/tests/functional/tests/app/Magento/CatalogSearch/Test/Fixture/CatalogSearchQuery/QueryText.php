@@ -61,7 +61,7 @@ class QueryText extends DataSource
                 $searchValue = isset($productData[2]) ? $productData[2] : $productData[1];
                 if ($this->data === null) {
                     if ($product->hasData($searchValue)) {
-                        $getProperty = 'get' . str_replace('_', '', ucwords($searchValue, '_'));
+                        $getProperty = 'get' . str_replace(' ', '', ucwords(str_replace('_', ' ', $searchValue)));
                         $this->data = $product->$getProperty();
                     } else {
                         $this->data = $searchValue;
@@ -70,7 +70,7 @@ class QueryText extends DataSource
 
                 $products[] = $product;
             } elseif ($this->data === null) {
-                $this->data = (string)$productData;
+                $this->data = strval($productData);
             }
         }
 

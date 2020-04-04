@@ -9,7 +9,6 @@ namespace Magento\Mtf\Util\Command\File;
 use Magento\Mtf\ObjectManagerInterface;
 use Magento\Mtf\Util\Command\File\Export\Data;
 use Magento\Mtf\Util\Command\File\Export\ReaderInterface;
-use Magento\ImportExport\Test\Page\Adminhtml\AdminExportIndex;
 
 /**
  * Get Exporting file from the Magento.
@@ -38,25 +37,12 @@ class Export implements ExportInterface
     private $reader;
 
     /**
-     * Admin export index page.
-     *
-     * @var AdminExportIndex
-     */
-    private $adminExportIndex;
-
-    /**
      * @param ObjectManagerInterface $objectManager
-     * @param AdminExportIndex $adminExportIndex
-     * @param string $type
-     * @throws \ReflectionException
+     * @param string $type [optional]
      */
-    public function __construct(
-        ObjectManagerInterface $objectManager,
-        AdminExportIndex $adminExportIndex,
-        $type = 'product'
-    ) {
+    public function __construct(ObjectManagerInterface $objectManager, $type = 'product')
+    {
         $this->objectManager = $objectManager;
-        $this->adminExportIndex = $adminExportIndex;
         $this->reader = $this->getReader($type);
     }
 
@@ -82,11 +68,9 @@ class Export implements ExportInterface
      *
      * @param string $name
      * @return Data|null
-     * @throws \Exception
      */
     public function getByName($name)
     {
-        $this->downloadFile();
         $this->reader->getData();
         foreach ($this->reader->getData() as $file) {
             if ($file->getName() === $name) {
@@ -101,11 +85,9 @@ class Export implements ExportInterface
      * Get latest created the export file.
      *
      * @return Data|null
-     * @throws \Exception
      */
     public function getLatest()
     {
-        $this->downloadFile();
         $max = 0;
         $latest = null;
         foreach ($this->reader->getData() as $file) {
@@ -124,11 +106,9 @@ class Export implements ExportInterface
      * @param string $start
      * @param string $end
      * @return Data[]
-     * @throws \Exception
      */
     public function getByDateRange($start, $end)
     {
-        $this->downloadFile();
         $files = [];
         foreach ($this->reader->getData() as $file) {
             if ($file->getDate() > $start && $file->getDate() < $end) {
@@ -143,25 +123,9 @@ class Export implements ExportInterface
      * Get all export files.
      *
      * @return Data[]
-     * @throws \Exception
      */
     public function getAll()
     {
-        $this->downloadFile();
         return $this->reader->getData();
-    }
-
-    /**
-     * Download exported file
-     *
-     * @return void
-     * @throws \Exception
-     */
-    private function downloadFile()
-    {
-        $this->adminExportIndex->open();
-        /** @var \Magento\ImportExport\Test\Block\Adminhtml\Export\ExportedGrid $exportedGrid */
-        $exportedGrid = $this->adminExportIndex->getExportedGrid();
-        $exportedGrid->downloadFirstFile();
     }
 }

@@ -95,6 +95,6 @@ class LinkProviderTest extends WebapiAbstract
      */
     private function isTestBaseUrlSecure()
     {
-        return strpos(TESTS_BASE_URL, 'https://') !== false;
+        return strpos('https://', TESTS_BASE_URL) !== false;
     }
 }

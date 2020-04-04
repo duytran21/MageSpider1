@@ -7,6 +7,7 @@ namespace Magento\Sniffs\Less;
 
 /**
  * Interface TokenizerSymbolsInterface
+ *
  */
 interface TokenizerSymbolsInterface
 {

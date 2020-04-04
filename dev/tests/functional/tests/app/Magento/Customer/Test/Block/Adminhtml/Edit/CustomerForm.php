@@ -65,7 +65,6 @@ class CustomerForm extends FormTabs
      * @param FixtureInterface $customer
      * @param FixtureInterface|FixtureInterface[]|null $address
      * @return $this
-     * @throws \Exception
      */
     public function fillCustomer(FixtureInterface $customer, $address = null)
     {
@@ -77,25 +76,8 @@ class CustomerForm extends FormTabs
         }
         if (null !== $address) {
             $this->openTab('addresses');
-            $this->fillCustomerAddress($address);
+            $this->getTab('addresses')->fillAddresses($address);
         }
-
-        return $this;
-    }
-
-    /**
-     * Fill customer address by provided in parameter data
-     *
-     * @param FixtureInterface|FixtureInterface[] $address
-     * @return $this
-     * @throws \Exception
-     */
-    public function fillCustomerAddress($address)
-    {
-        $addressesTab = $this->getTab('addresses');
-        $this->openTab('addresses');
-        $addressesTab->waitForAddressesGrid();
-        $addressesTab->fillAddresses($address);
 
         return $this;
     }
@@ -116,16 +98,13 @@ class CustomerForm extends FormTabs
         if ($isHasData) {
             parent::fill($customer);
         }
-        $addressesTab = $this->getTab('addresses');
         if ($addressToDelete !== null) {
             $this->openTab('addresses');
-            $addressesTab->waitForAddressesGrid();
-            $addressesTab->deleteCustomerAddress($addressToDelete);
+            $this->getTab('addresses')->deleteCustomerAddress($addressToDelete);
         }
         if ($address !== null) {
             $this->openTab('addresses');
-            $addressesTab->waitForAddressesGrid();
-            $addressesTab->updateAddresses($address);
+            $this->getTab('addresses')->updateAddresses($address);
         }
 
         return $this;
@@ -145,9 +124,6 @@ class CustomerForm extends FormTabs
         $data = ['customer' => $customer->hasData() ? parent::getData($customer) : parent::getData()];
         if (null !== $address) {
             $this->openTab('addresses');
-            $this->waitForElementNotVisible($this->tabReadiness);
-            $this->waitForm();
-            $this->getTab('addresses')->waitForAddressesGrid();
             $data['addresses'] = $this->getTab('addresses')->getDataAddresses($address);
         }
 
@@ -172,10 +148,8 @@ class CustomerForm extends FormTabs
      */
     public function openTab($tabName)
     {
-        $this->waitForElementNotVisible($this->tabReadiness);
         parent::openTab($tabName);
         $this->waitForElementNotVisible($this->tabReadiness);
-        $this->waitForm();
 
         return $this;
     }
@@ -187,10 +161,13 @@ class CustomerForm extends FormTabs
      */
     public function getJsErrors()
     {
+        $tabs = ['account_information', 'addresses'];
         $jsErrors = [];
-        $tab = $this->getTab('account_information');
-        $this->openTab('account_information');
-        $jsErrors = array_merge($jsErrors, $tab->getJsErrors());
+        foreach ($tabs as $tabName) {
+            $tab = $this->getTab($tabName);
+            $this->openTab($tabName);
+            $jsErrors = array_merge($jsErrors, $tab->getJsErrors());
+        }
         return $jsErrors;
     }
 

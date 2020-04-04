@@ -7,9 +7,6 @@ namespace Magento\TestFramework\CodingStandard\Tool;
 
 use PHP_CodeSniffer\Runner;
 
-/**
- * Unit test to check CodeSniffer tool.
- */
 class CodeSnifferTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -51,6 +48,7 @@ class CodeSnifferTest extends \PHPUnit\Framework\TestCase
             'files' => $whiteList,
             'standards' => [self::RULE_SET],
             'extensions' => $extensions,
+            'warningSeverity' => 0,
             'reports' => ['full' => self::REPORT_FILE],
         ];
 

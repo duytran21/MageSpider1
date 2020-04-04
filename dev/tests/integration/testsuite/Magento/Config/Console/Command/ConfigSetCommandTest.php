@@ -3,12 +3,9 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\Config\Console\Command;
 
 use Magento\Config\Model\Config\Backend\Admin\Custom;
-use Magento\Config\Model\Config\Structure\Converter;
-use Magento\Config\Model\Config\Structure\Data as StructureData;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\App\Config\ConfigPathResolver;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -30,7 +27,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Tests the different flows of config:set command.
  *
- * @inheritdoc
+ * {@inheritdoc}
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @magentoDbIsolation enabled
  */
@@ -93,8 +90,6 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
     {
         Bootstrap::getInstance()->reinitialize();
         $this->objectManager = Bootstrap::getObjectManager();
-        $this->extendSystemStructure();
-
         $this->scopeConfig = $this->objectManager->get(ScopeConfigInterface::class);
         $this->reader = $this->objectManager->get(FileReader::class);
         $this->filesystem = $this->objectManager->get(Filesystem::class);
@@ -128,21 +123,6 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Add test system structure to main system structure
-     *
-     * @return void
-     */
-    private function extendSystemStructure()
-    {
-        $document = new \DOMDocument();
-        $document->load(__DIR__ . '/../../_files/system.xml');
-        $converter = $this->objectManager->get(Converter::class);
-        $systemConfig = $converter->convert($document);
-        $structureData = $this->objectManager->get(StructureData::class);
-        $structureData->merge($systemConfig);
-    }
-
-    /**
      * @return array
      */
     private function loadConfig()
@@ -161,7 +141,7 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
      * @magentoDbIsolation enabled
      * @dataProvider runLockDataProvider
      */
-    public function testRunLockEnv($path, $value, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null)
+    public function testRunLock($path, $value, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeCode = null)
     {
         $this->inputMock->expects($this->any())
             ->method('getArgument')
@@ -172,15 +152,15 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
         $this->inputMock->expects($this->any())
             ->method('getOption')
             ->willReturnMap([
-                [ConfigSetCommand::OPTION_LOCK_ENV, true],
+                [ConfigSetCommand::OPTION_LOCK, true],
                 [ConfigSetCommand::OPTION_SCOPE, $scope],
                 [ConfigSetCommand::OPTION_SCOPE_CODE, $scopeCode]
             ]);
         $this->outputMock->expects($this->exactly(2))
             ->method('writeln')
             ->withConsecutive(
-                ['<info>Value was saved in app/etc/env.php and locked.</info>'],
-                ['<info>Value was saved in app/etc/env.php and locked.</info>']
+                ['<info>Value was saved and locked.</info>'],
+                ['<info>Value was saved and locked.</info>']
             );
 
         /** @var ConfigSetCommand $command */
@@ -210,8 +190,6 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
             ['general/region/display_all', '1'],
             ['general/region/state_required', 'BR,FR', ScopeInterface::SCOPE_WEBSITE, 'base'],
             ['admin/security/use_form_key', '0'],
-            ['general/group/subgroup/field', 'default_value'],
-            ['general/group/subgroup/field', 'website_value', ScopeInterface::SCOPE_WEBSITE, 'base'],
         ];
     }
 
@@ -239,7 +217,7 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
             [ConfigSetCommand::OPTION_SCOPE, $scope],
             [ConfigSetCommand::OPTION_SCOPE_CODE, $scopeCode]
         ];
-        $optionsLock = array_merge($options, [[ConfigSetCommand::OPTION_LOCK_ENV, true]]);
+        $optionsLock = array_merge($options, [[ConfigSetCommand::OPTION_LOCK, true]]);
 
         /** @var ConfigPathResolver $resolver */
         $resolver = $this->objectManager->get(ConfigPathResolver::class);
@@ -255,8 +233,8 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertSame(null, $this->arrayManager->get($configPath, $this->loadConfig()));
 
-        $this->runCommand($arguments, $optionsLock, '<info>Value was saved in app/etc/env.php and locked.</info>');
-        $this->runCommand($arguments, $optionsLock, '<info>Value was saved in app/etc/env.php and locked.</info>');
+        $this->runCommand($arguments, $optionsLock, '<info>Value was saved and locked.</info>');
+        $this->runCommand($arguments, $optionsLock, '<info>Value was saved and locked.</info>');
 
         $this->assertSame($value, $this->arrayManager->get($configPath, $this->loadConfig()));
     }
@@ -313,7 +291,8 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
      * @param string $scope
      * @param $scopeCode string|null
      * @dataProvider configSetValidationErrorDataProvider
-     * @magentoDbIsolation disabled
+     *
+     * @magentoDbIsolation enabled
      */
     public function testConfigSetValidationError(
         $path,
@@ -327,7 +306,6 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Data provider for testConfigSetValidationError
-     *
      * @return array
      */
     public function configSetValidationErrorDataProvider()
@@ -343,45 +321,45 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
             [
                 'test/test/test',
                 'value',
-                'The "test/test/test" path doesn\'t exist. Verify and try again.'
+                'The "test/test/test" path does not exist'
             ],
             //wrong scope or scope code
             [
                 Custom::XML_PATH_GENERAL_LOCALE_CODE,
                 'en_UK',
-                'A scope is missing. Enter a scope and try again.',
+                'Enter a scope before proceeding.',
                 ''
             ],
             [
                 Custom::XML_PATH_GENERAL_LOCALE_CODE,
                 'en_UK',
-                'A scope code is missing. Enter a code and try again.',
+                'Enter a scope code before proceeding.',
                 ScopeInterface::SCOPE_WEBSITE
             ],
             [
                 Custom::XML_PATH_GENERAL_LOCALE_CODE,
                 'en_UK',
-                'A scope code is missing. Enter a code and try again.',
+                'Enter a scope code before proceeding.',
                 ScopeInterface::SCOPE_STORE
             ],
             [
                 Custom::XML_PATH_GENERAL_LOCALE_CODE,
                 'en_UK',
-                'The "wrong_scope" value doesn\'t exist. Enter another value and try again.',
+                'The "wrong_scope" value doesn\'t exist. Enter another value.',
                 'wrong_scope',
                 'base'
             ],
             [
                 Custom::XML_PATH_GENERAL_LOCALE_CODE,
                 'en_UK',
-                'The "wrong_website_code" value doesn\'t exist. Enter another value and try again.',
+                'The "wrong_website_code" value doesn\'t exist. Enter another value.',
                 ScopeInterface::SCOPE_WEBSITE,
                 'wrong_website_code'
             ],
             [
                 Custom::XML_PATH_GENERAL_LOCALE_CODE,
                 'en_UK',
-                'The "wrong_store_code" value doesn\'t exist. Enter another value and try again.',
+                'The "wrong_store_code" value doesn\'t exist. Enter another value.',
                 ScopeInterface::SCOPE_STORE,
                 'wrong_store_code'
             ],
@@ -420,6 +398,7 @@ class ConfigSetCommandTest extends \PHPUnit\Framework\TestCase
      * Saving values with successful validation
      *
      * @dataProvider configSetValidDataProvider
+     *
      * @magentoDbIsolation enabled
      */
     public function testConfigSetValid()

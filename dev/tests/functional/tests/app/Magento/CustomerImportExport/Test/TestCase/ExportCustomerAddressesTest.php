@@ -10,7 +10,6 @@ use Magento\ImportExport\Test\Fixture\ExportData;
 use Magento\ImportExport\Test\Page\Adminhtml\AdminExportIndex;
 use Magento\Mtf\Fixture\FixtureFactory;
 use Magento\Mtf\TestCase\Injectable;
-use Magento\Mtf\Util\Command\Cli\Cron;
 
 /**
  * Preconditions:
@@ -44,28 +43,18 @@ class ExportCustomerAddressesTest extends Injectable
     private $adminExportIndex;
 
     /**
-     * Cron command
-     *
-     * @var Cron
-     */
-    private $cron;
-
-    /**
      * Inject pages.
      *
      * @param FixtureFactory $fixtureFactory
      * @param AdminExportIndex $adminExportIndex
-     * @param Cron $cron
      * @return void
      */
     public function __inject(
         FixtureFactory $fixtureFactory,
-        AdminExportIndex $adminExportIndex,
-        Cron $cron
+        AdminExportIndex $adminExportIndex
     ) {
         $this->fixtureFactory = $fixtureFactory;
         $this->adminExportIndex = $adminExportIndex;
-        $this->cron = $cron;
     }
 
     /**
@@ -79,16 +68,12 @@ class ExportCustomerAddressesTest extends Injectable
         ExportData $exportData,
         Customer $customer
     ) {
-        $this->cron->run();
-        $this->cron->run();
         $customer->persist();
         $this->adminExportIndex->open();
-        $this->adminExportIndex->getExportedGrid()->deleteAllExportedFiles();
         $exportData->persist();
         $this->adminExportIndex->getExportForm()->fill($exportData);
         $this->adminExportIndex->getFilterExport()->clickContinue();
-        $this->cron->run();
-        $this->cron->run();
+
         return [
             'customer' => $customer
         ];

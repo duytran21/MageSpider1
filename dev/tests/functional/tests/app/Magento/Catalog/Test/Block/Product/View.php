@@ -89,7 +89,7 @@ class View extends AbstractConfigureBlock
      *
      * @var string
      */
-    protected $productDescription = '.product.attribute.description .value';
+    protected $productDescription = '.product.attribute.description';
 
     /**
      * Product short-description element.
@@ -221,13 +221,6 @@ class View extends AbstractConfigureBlock
     private $thresholdMessage = '.availability.only';
 
     /**
-     * Qty field error message selector.
-     *
-     * @var string
-     */
-    private $qtyErrorMessage = '#qty-error';
-
-    /**
      * Checks if threshold message is displayed.
      *
      * @return bool
@@ -250,23 +243,10 @@ class View extends AbstractConfigureBlock
     /**
      * Get block price.
      *
-     * @param FixtureInterface|null $product
-     *
      * @return Price
      */
-    public function getPriceBlock(FixtureInterface $product = null)
+    public function getPriceBlock()
     {
-        $typeId = '';
-
-        if ($product) {
-            $dataConfig = $product->getDataConfig();
-            $typeId = isset($dataConfig['type_id']) ? $dataConfig['type_id'] : null;
-        }
-
-        if ($this->hasRender($typeId)) {
-            return $this->callRender($typeId, 'getPriceBlock');
-        }
-
         return $this->blockFactory->create(
             \Magento\Catalog\Test\Block\Product\Price::class,
             ['element' => $this->_rootElement->find($this->priceBlock, Locator::SELECTOR_XPATH)]
@@ -670,6 +650,7 @@ class View extends AbstractConfigureBlock
      */
     public function isVideoVisible()
     {
+        $this->waitForElementNotVisible($this->galleryLoader);
         return $this->_rootElement->find($this->videoContainer)->isVisible();
     }
 
@@ -683,17 +664,5 @@ class View extends AbstractConfigureBlock
     {
         $dataVideoSelector = $this->productVideo . '[data-code="' . $videoData. '"]';
         return $this->_rootElement->find($dataVideoSelector)->isPresent();
-    }
-
-    /**
-     * Resolve qty field error message.
-     *
-     * @return string
-     */
-    public function getQtyErrorMessage()
-    {
-        $this->waitForElementVisible($this->qtyErrorMessage);
-
-        return $this->_rootElement->find($this->qtyErrorMessage)->getText();
     }
 }

@@ -8,9 +8,6 @@ namespace Magento\Setup\Test\Unit\Model;
 
 use Magento\Setup\Model\DataGenerator;
 
-/**
- * Class DataGeneratorTest
- */
 class DataGeneratorTest extends \PHPUnit\Framework\TestCase
 {
 
@@ -41,7 +38,7 @@ class DataGeneratorTest extends \PHPUnit\Framework\TestCase
         $key = 'generate-test';
 
         $data = file(__DIR__ . self::PATH_TO_CSV_FILE);
-        $wordCount = random_int(1, count($data));
+        $wordCount = mt_rand(1, count($data));
         $model = new DataGenerator(__DIR__ . self::PATH_TO_CSV_FILE);
         $result = $model->generate($wordCount, $wordCount, $key);
 

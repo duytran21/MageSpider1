@@ -96,7 +96,7 @@ return [
     'catalogrule_website'                         => 'Magento\CatalogRule',
     'catalogsearch_fulltext'                      => 'Magento\CatalogSearch',
     'catalogsearch_result'                        => 'Magento\CatalogSearch',
-    'search_query'                                => 'Magento\Search',
+    'search_query'                                => 'Magento\CatalogSearch',
     'checkout_agreement'                          => 'Magento\Checkout',
     'checkout_agreement_store'                    => 'Magento\Checkout',
     'cms_block'                                   => 'Magento\Cms',
@@ -300,6 +300,4 @@ return [
     'theme_files'                                 => 'Magento\Theme',
     'variable'                                    => 'Magento\Variable',
     'variable_value'                              => 'Magento\Variable',
-    'job_queue'                                   => 'Magento\Queue',
-    'catalogsearch_recommendations'               => 'Magento\AdvancedSearch',
 ];

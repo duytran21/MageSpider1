@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © Magento, Inc. All rights reserved.
+ * Copyright © 2013-2017 Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
 namespace Magento\Update\Queue;
 
-class ReaderTest extends \PHPUnit\Framework\TestCase
+class ReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Magento\Update\Queue\Reader
@@ -69,9 +69,10 @@ class ReaderTest extends \PHPUnit\Framework\TestCase
     public function testReadInvalidFileFormat()
     {
         $reader = new \Magento\Update\Queue\Reader($this->invalidQueueFilePath);
-        $this->expectException('\RuntimeException');
-        $this->expectExceptionMessage("Content of \"{$this->invalidQueueFilePath}\" must be a valid JSON.");
-
+        $this->setExpectedException(
+            '\RuntimeException',
+            "Content of \"{$this->invalidQueueFilePath}\" must be a valid JSON."
+        );
         $reader->read();
     }
 }

@@ -98,12 +98,9 @@ class IndexTest extends \Magento\TestFramework\TestCase\AbstractController
     {
         /** @var \Magento\Framework\Data\Form\FormKey $formKey */
         $formKey = $this->_objectManager->get(\Magento\Framework\Data\Form\FormKey::class);
-        $this->getRequest()->setMethod('POST');
-        $this->getRequest()->setPostValue(
-            [
-                'form_key' => $formKey->getFormKey(),
-            ]
-        );
+        $this->getRequest()->setPostValue([
+            'form_key' => $formKey->getFormKey(),
+        ]);
 
         /** @var \Magento\Catalog\Api\ProductRepositoryInterface $productRepository */
         $productRepository = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
@@ -125,13 +122,11 @@ class IndexTest extends \Magento\TestFramework\TestCase\AbstractController
     }
 
     /**
-     * @magentoDbIsolation disabled
      * @magentoDataFixture Magento/Wishlist/_files/wishlist_with_product_qty_increments.php
      */
     public function testAllcartAction()
     {
         $formKey = $this->_objectManager->get(\Magento\Framework\Data\Form\FormKey::class)->getFormKey();
-        $this->getRequest()->setMethod('POST');
         $this->getRequest()->setParam('form_key', $formKey);
         $this->dispatch('wishlist/index/allcart');
 
@@ -141,11 +136,7 @@ class IndexTest extends \Magento\TestFramework\TestCase\AbstractController
 
         $this->assertEquals(0, $quoteCount);
         $this->assertSessionMessages(
-            $this->contains(
-                htmlspecialchars(
-                    'You can buy this product only in quantities of 5 at a time for "Simple Product".'
-                )
-            ),
+            $this->contains('You can buy this product only in quantities of 5 at a time for "Simple Product".'),
             \Magento\Framework\Message\MessageInterface::TYPE_ERROR
         );
     }
@@ -166,7 +157,6 @@ class IndexTest extends \Magento\TestFramework\TestCase\AbstractController
         ];
 
         $this->getRequest()->setPostValue($request);
-        $this->getRequest()->setMethod('POST');
 
         $this->_objectManager->get(\Magento\Framework\Registry::class)->register(
             'wishlist',
@@ -179,7 +169,9 @@ class IndexTest extends \Magento\TestFramework\TestCase\AbstractController
             \Magento\TestFramework\Mail\Template\TransportBuilderMock::class
         );
 
-        $actualResult = $transportBuilder->getSentMessage()->getBody()->getParts()[0]->getRawContent();
+        $actualResult = \Zend_Mime_Decode::decodeQuotedPrintable(
+            $transportBuilder->getSentMessage()->getBodyHtml()->getContent()
+        );
 
         $this->assertStringMatchesFormat(
             '%A' . $this->_customerViewHelper->getCustomerName($this->_customerSession->getCustomerDataObject())

@@ -7,20 +7,14 @@
 namespace Magento\User\Test\Constraint;
 
 use Magento\Backend\Test\Page\Adminhtml\Dashboard;
-use Magento\Mtf\Constraint\AbstractConstraint;
 use Magento\User\Test\Fixture\User;
-use Magento\User\Test\TestStep\LoginUserOnBackendStep;
+use Magento\Mtf\Constraint\AbstractConstraint;
 
 /**
  * Verify whether customer has logged in to the Backend.
  */
 class AssertUserSuccessLogin extends AbstractConstraint
 {
-    /**
-     * @var string
-     */
-    protected $loginStep = LoginUserOnBackendStep::class;
-
     /**
      * Verify whether customer has logged in to the Backend.
      *
@@ -31,10 +25,10 @@ class AssertUserSuccessLogin extends AbstractConstraint
     public function processAssert(User $user, Dashboard $dashboard)
     {
         $this->objectManager->create(
-            $this->loginStep,
+            \Magento\User\Test\TestStep\LoginUserOnBackendStep::class,
             ['user' => $user]
         )->run();
-        \PHPUnit\Framework\Assert::assertTrue(
+        \PHPUnit_Framework_Assert::assertTrue(
             $dashboard->getAdminPanelHeader()->isLoggedIn(),
             'Admin user was not logged in.'
         );

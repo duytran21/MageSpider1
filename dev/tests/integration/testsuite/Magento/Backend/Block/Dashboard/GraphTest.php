@@ -3,8 +3,6 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-declare(strict_types=1);
-
 namespace Magento\Backend\Block\Dashboard;
 
 /**
@@ -29,6 +27,6 @@ class GraphTest extends \PHPUnit\Framework\TestCase
 
     public function testGetChartUrl()
     {
-        $this->assertStringStartsWith('https://image-charts.com/chart', $this->_block->getChartUrl());
+        $this->assertStringStartsWith('http://chart.apis.google.com/chart', $this->_block->getChartUrl());
     }
 }

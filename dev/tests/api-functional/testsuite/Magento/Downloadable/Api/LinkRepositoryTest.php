@@ -3,7 +3,6 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\Downloadable\Api;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -12,9 +11,6 @@ use Magento\Downloadable\Model\Link;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\WebapiAbstract;
 
-/**
- * API tests for Magento\Downloadable\Model\LinkRepository.
- */
 class LinkRepositoryTest extends WebapiAbstract
 {
     /**
@@ -138,12 +134,10 @@ class LinkRepositoryTest extends WebapiAbstract
                 'number_of_downloads' => 100,
                 'link_type' => 'file',
                 'link_file_content' => [
-                    //phpcs:ignore Magento2.Functions.DiscouragedFunction
                     'file_data' => base64_encode(file_get_contents($this->testImagePath)),
                     'name' => 'image.jpg',
                 ],
                 'sample_file_content' => [
-                    //phpcs:ignore Magento2.Functions.DiscouragedFunction
                     'file_data' => base64_encode(file_get_contents($this->testImagePath)),
                     'name' => 'image.jpg',
                 ],
@@ -246,7 +240,7 @@ class LinkRepositoryTest extends WebapiAbstract
     /**
      * @magentoApiDataFixture Magento/Downloadable/_files/product_downloadable.php
      * @expectedException \Exception
-     * @expectedExceptionMessage The link type is invalid. Verify and try again.
+     * @expectedExceptionMessage Invalid link type.
      */
     public function testCreateThrowsExceptionIfLinkTypeIsNotSpecified()
     {
@@ -291,64 +285,6 @@ class LinkRepositoryTest extends WebapiAbstract
                     'file_data' => 'not_a_base64_encoded_content',
                     'name' => 'image.jpg',
                 ],
-            ],
-        ];
-
-        $this->_webApiCall($this->createServiceInfo, $requestData);
-    }
-
-    /**
-     * Check that error appears when link file not existing in filesystem.
-     *
-     * @magentoApiDataFixture Magento/Downloadable/_files/product_downloadable.php
-     * @expectedException \Exception
-     * @expectedExceptionMessage Link file not found. Please try again.
-     * @return void
-     */
-    public function testCreateLinkWithMissingLinkFileThrowsException(): void
-    {
-        $requestData = [
-            'isGlobalScopeContent' => false,
-            'sku' => 'downloadable-product',
-            'link' => [
-                'title' => 'Link Title',
-                'sort_order' => 1,
-                'price' => 10,
-                'is_shareable' => 1,
-                'number_of_downloads' => 100,
-                'link_type' => 'file',
-                'link_file' => '/n/o/nexistfile.png',
-                'sample_type' => 'url',
-                'sample_file' => 'http://google.com',
-            ],
-        ];
-
-        $this->_webApiCall($this->createServiceInfo, $requestData);
-    }
-
-    /**
-     * Check that error appears when link sample file not existing in filesystem.
-     *
-     * @magentoApiDataFixture Magento/Downloadable/_files/product_downloadable.php
-     * @expectedException \Exception
-     * @expectedExceptionMessage Link sample file not found. Please try again.
-     * @return void
-     */
-    public function testCreateLinkWithMissingSampleFileThrowsException(): void
-    {
-        $requestData = [
-            'isGlobalScopeContent' => false,
-            'sku' => 'downloadable-product',
-            'link' => [
-                'title' => 'Link Title',
-                'sort_order' => 1,
-                'price' => 10,
-                'is_shareable' => 1,
-                'number_of_downloads' => 100,
-                'link_type' => 'url',
-                'link_url' => 'http://www.example.com/',
-                'sample_type' => 'file',
-                'sample_file' => '/n/o/nexistfile.png',
             ],
         ];
 
@@ -402,7 +338,6 @@ class LinkRepositoryTest extends WebapiAbstract
                 'number_of_downloads' => 100,
                 'link_type' => 'file',
                 'link_file_content' => [
-                    //phpcs:ignore Magento2.Functions.DiscouragedFunction
                     'file_data' => base64_encode(file_get_contents($this->testImagePath)),
                     'name' => 'name/with|forbidden{characters',
                 ],
@@ -434,7 +369,6 @@ class LinkRepositoryTest extends WebapiAbstract
                 'link_url' => 'http://www.example.com/',
                 'sample_type' => 'file',
                 'sample_file_content' => [
-                    //phpcs:ignore Magento2.Functions.DiscouragedFunction
                     'file_data' => base64_encode(file_get_contents($this->testImagePath)),
                     'name' => 'name/with|forbidden{characters',
                 ],
@@ -464,58 +398,6 @@ class LinkRepositoryTest extends WebapiAbstract
                 'link_url' => 'http://example<.>com/',
                 'sample_type' => 'url',
                 'sample_url' => 'http://www.example.com/',
-            ],
-        ];
-
-        $this->_webApiCall($this->createServiceInfo, $requestData);
-    }
-
-    /**
-     * @magentoApiDataFixture Magento/Downloadable/_files/product_downloadable.php
-     * @expectedException \Exception
-     * @expectedExceptionMessage Link URL's domain is not in list of downloadable_domains in env.php.
-     */
-    public function testCreateThrowsExceptionIfLinkUrlUsesDomainNotInWhitelist()
-    {
-        $requestData = [
-            'isGlobalScopeContent' => false,
-            'sku' => 'downloadable-product',
-            'link' => [
-                'title' => 'Link Title',
-                'sort_order' => 1,
-                'price' => 10,
-                'is_shareable' => 1,
-                'number_of_downloads' => 100,
-                'link_type' => 'url',
-                'link_url' => 'http://notAnywhereInEnv.com/',
-                'sample_type' => 'url',
-                'sample_url' => 'http://www.example.com/',
-            ],
-        ];
-
-        $this->_webApiCall($this->createServiceInfo, $requestData);
-    }
-
-    /**
-     * @magentoApiDataFixture Magento/Downloadable/_files/product_downloadable.php
-     * @expectedException \Exception
-     * @expectedExceptionMessage Sample URL's domain is not in list of downloadable_domains in env.php.
-     */
-    public function testCreateThrowsExceptionIfSampleUrlUsesDomainNotInWhitelist()
-    {
-        $requestData = [
-            'isGlobalScopeContent' => false,
-            'sku' => 'downloadable-product',
-            'link' => [
-                'title' => 'Link Title',
-                'sort_order' => 1,
-                'price' => 10,
-                'is_shareable' => 1,
-                'number_of_downloads' => 100,
-                'link_type' => 'url',
-                'link_url' => 'http://example.com/',
-                'sample_type' => 'url',
-                'sample_url' => 'http://www.notAnywhereInEnv.com/',
             ],
         ];
 
@@ -660,7 +542,7 @@ class LinkRepositoryTest extends WebapiAbstract
     /**
      * @magentoApiDataFixture Magento/Catalog/_files/product_simple.php
      * @expectedException \Exception
-     * @expectedExceptionMessage The product needs to be the downloadable type. Verify the product and try again.
+     * @expectedExceptionMessage Provided product must be type 'downloadable'.
      */
     public function testCreateThrowsExceptionIfTargetProductTypeIsNotDownloadable()
     {
@@ -685,7 +567,7 @@ class LinkRepositoryTest extends WebapiAbstract
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage The product that was requested doesn't exist. Verify the product and try again.
+     * @expectedExceptionMessage Requested product doesn't exist
      */
     public function testCreateThrowsExceptionIfTargetProductDoesNotExist()
     {
@@ -727,9 +609,7 @@ class LinkRepositoryTest extends WebapiAbstract
                 'is_shareable' => 0,
                 'number_of_downloads' => 50,
                 'link_type' => 'url',
-                'link_url' => 'http://google.com',
                 'sample_type' => 'url',
-                'sample_url' => 'http://google.com',
             ],
         ];
         $this->assertEquals($linkId, $this->_webApiCall($this->updateServiceInfo, $requestData));
@@ -762,9 +642,7 @@ class LinkRepositoryTest extends WebapiAbstract
                 'is_shareable' => 0,
                 'number_of_downloads' => 50,
                 'link_type' => 'url',
-                'link_url' => 'http://google.com',
                 'sample_type' => 'url',
-                'sample_url' => 'http://google.com',
             ],
         ];
 
@@ -784,7 +662,7 @@ class LinkRepositoryTest extends WebapiAbstract
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage The product that was requested doesn't exist. Verify the product and try again.
+     * @expectedExceptionMessage Requested product doesn't exist
      */
     public function testUpdateThrowsExceptionIfTargetProductDoesNotExist()
     {
@@ -809,7 +687,7 @@ class LinkRepositoryTest extends WebapiAbstract
     /**
      * @magentoApiDataFixture Magento/Downloadable/_files/product_downloadable.php
      * @expectedException \Exception
-     * @expectedExceptionMessage No downloadable link with the provided ID was found. Verify the ID and try again.
+     * @expectedExceptionMessage There is no downloadable link with provided ID.
      */
     public function testUpdateThrowsExceptionIfThereIsNoDownloadableLinkWithGivenId()
     {
@@ -937,7 +815,7 @@ class LinkRepositoryTest extends WebapiAbstract
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage No downloadable link with the provided ID was found. Verify the ID and try again.
+     * @expectedExceptionMessage There is no downloadable link with provided ID.
      */
     public function testDeleteThrowsExceptionIfThereIsNoDownloadableLinkWithGivenId()
     {
@@ -971,7 +849,7 @@ class LinkRepositoryTest extends WebapiAbstract
 
         $requestData = ['sku' => $sku];
 
-        $expectedMessage = "The product that was requested doesn't exist. Verify the product and try again.";
+        $expectedMessage = 'Requested product doesn\'t exist';
         try {
             $this->_webApiCall($serviceInfo, $requestData);
         } catch (\SoapFault $e) {

@@ -3,11 +3,9 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-
 namespace Magento\ImportExport\Controller\Adminhtml\Import;
 
 use Magento\Framework\Filesystem\DirectoryList;
-use Magento\Framework\HTTP\Adapter\FileTransferFactory;
 use Magento\ImportExport\Model\Import;
 use Magento\ImportExport\Model\Import\ErrorProcessing\ProcessingErrorAggregatorInterface;
 
@@ -19,15 +17,12 @@ class ValidateTest extends \Magento\TestFramework\TestCase\AbstractBackendContro
     /**
      * @dataProvider validationDataProvider
      * @param string $fileName
-     * @param string $mimeType
      * @param string $message
      * @param string $delimiter
-     * @throws \Magento\Framework\Exception\FileSystemException
      * @backupGlobals enabled
      * @magentoDbIsolation enabled
-     * @SuppressWarnings(PHPMD.Superglobals)
      */
-    public function testValidationReturn(string $fileName, string $mimeType, string $message, string $delimiter): void
+    public function testValidationReturn($fileName, $message, $delimiter)
     {
         $validationStrategy = ProcessingErrorAggregatorInterface::VALIDATION_STRATEGY_STOP_ON_ERROR;
 
@@ -55,7 +50,7 @@ class ValidateTest extends \Magento\TestFramework\TestCase\AbstractBackendContro
         $_FILES = [
             'import_file' => [
                 'name' => $fileName,
-                'type' => $mimeType,
+                'type' => 'text/csv',
                 'tmp_name' => $target,
                 'error' => 0,
                 'size' => filesize($target)
@@ -64,7 +59,10 @@ class ValidateTest extends \Magento\TestFramework\TestCase\AbstractBackendContro
 
         $this->_objectManager->configure(
             [
-                'preferences' => [FileTransferFactory::class => HttpFactoryMock::class]
+                'preferences' => [
+                    \Magento\Framework\HTTP\Adapter\FileTransferFactory::class =>
+                        \Magento\ImportExport\Controller\Adminhtml\Import\HttpFactoryMock::class
+                ]
             ]
         );
 
@@ -81,38 +79,28 @@ class ValidateTest extends \Magento\TestFramework\TestCase\AbstractBackendContro
     /**
      * @return array
      */
-    public function validationDataProvider(): array
+    public function validationDataProvider()
     {
         return [
             [
                 'file_name' => 'catalog_product.csv',
-                'mime-type' => 'text/csv',
                 'message' => 'File is valid',
                 'delimiter' => ',',
             ],
             [
                 'file_name' => 'test.txt',
-                'mime-type' => 'text/csv',
-                'message' => 'The file cannot be uploaded.',
+                'message' => '\'txt\' file extension is not supported',
                 'delimiter' => ',',
             ],
             [
                 'file_name' => 'incorrect_catalog_product_comma.csv',
-                'mime-type' => 'text/csv',
                 'message' => 'Download full report',
                 'delimiter' => ',',
             ],
             [
                 'file_name' => 'incorrect_catalog_product_semicolon.csv',
-                'mime-type' => 'text/csv',
                 'message' => 'Download full report',
                 'delimiter' => ';',
-            ],
-            [
-                'file_name' => 'catalog_product.zip',
-                'mime-type' => 'application/zip',
-                'message' => 'File is valid',
-                'delimiter' => ',',
             ],
         ];
     }

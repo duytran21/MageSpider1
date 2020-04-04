@@ -3,10 +3,10 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-declare(strict_types=1);
 
 namespace Magento\Checkout\Test\Constraint;
 
+use Magento\Checkout\Test\Fixture\Cart;
 use Magento\Checkout\Test\Page\CheckoutCart;
 use Magento\Mtf\Client\BrowserInterface;
 use Magento\Mtf\Constraint\AbstractConstraint;
@@ -30,26 +30,22 @@ class AssertCartIsEmpty extends AbstractConstraint
      * @param BrowserInterface $browser
      * @return void
      */
-    public function processAssert(
-        CheckoutCart $checkoutCart,
-        BrowserInterface $browser
-    ): void {
+    public function processAssert(CheckoutCart $checkoutCart, BrowserInterface $browser)
+    {
         $checkoutCart->open();
         $cartEmptyBlock = $checkoutCart->getCartEmptyBlock();
 
-        \PHPUnit\Framework\Assert::assertEquals(
+        \PHPUnit_Framework_Assert::assertEquals(
             self::TEXT_EMPTY_CART,
             $cartEmptyBlock->getText(),
             'Wrong text on empty cart page.'
         );
 
         $cartEmptyBlock->clickLinkToMainPage();
-        $this->assertUrlEqual(
+        \PHPUnit_Framework_Assert::assertEquals(
             $_ENV['app_frontend_url'],
             $browser->getUrl(),
-            true,
-            'Wrong link to main page on empty cart page: expected - ' . $_ENV['app_frontend_url']
-            . ', actual - ' . $browser->getUrl()
+            'Wrong link to main page on empty cart page.'
         );
     }
 
@@ -61,32 +57,5 @@ class AssertCartIsEmpty extends AbstractConstraint
     public function toString()
     {
         return 'Shopping Cart is empty.';
-    }
-
-    /**
-     * Asserts that two urls are equal
-     *
-     * @param string $expectedUrl
-     * @param string $actualUrl
-     * @param bool $ignoreScheme
-     * @param string $message
-     * @return void
-     */
-    private function assertUrlEqual(
-        string $expectedUrl,
-        string $actualUrl,
-        bool $ignoreScheme = false,
-        string $message = ''
-    ): void {
-        $urlArray1 = parse_url($expectedUrl);
-        $urlArray2 = parse_url($actualUrl);
-        if ($ignoreScheme) {
-            unset($urlArray1['scheme']);
-            unset($urlArray2['scheme']);
-        }
-        \PHPUnit\Framework\Assert::assertTrue(
-            $urlArray1 === $urlArray2,
-            $message
-        );
     }
 }

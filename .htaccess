@@ -28,11 +28,6 @@
     #AddHandler x-mapp-php5 .php
 
 ############################################
-## enable usage of methods arguments in backtrace
-
-    SetEnv MAGE_DEBUG_SHOW_ARGS 1
-
-############################################
 ## default index file
 
     DirectoryIndex index.php
@@ -64,7 +59,7 @@
 ############################################
 ## adjust memory limit
 
-    php_value memory_limit 2G
+    php_value memory_limit 756M
     php_value max_execution_time 18000
 
 ############################################
@@ -279,6 +274,15 @@
             Require all denied
         </IfVersion>
     </Files>
+    <Files CONTRIBUTING.md>
+        <IfVersion < 2.4>
+            order allow,deny
+            deny from all
+        </IfVersion>
+        <IfVersion >= 2.4>
+            Require all denied
+        </IfVersion>
+    </Files>
     <Files COPYING.txt>
         <IfVersion < 2.4>
             order allow,deny
@@ -351,15 +355,6 @@
             Require all denied
         </IfVersion>
     </Files>
-    <Files magento_umask>
-        <IfVersion < 2.4>
-            order allow,deny
-            deny from all
-        </IfVersion>
-        <IfVersion >= 2.4>
-            Require all denied
-        </IfVersion>
-    </Files>
     <Files auth.json>
         <IfVersion < 2.4>
             order allow,deny
@@ -369,7 +364,7 @@
             Require all denied
         </IfVersion>
     </Files>
-    <Files .user.ini>
+    <Files magento_umask>
         <IfVersion < 2.4>
             order allow,deny
             deny from all

@@ -16,8 +16,9 @@ use PHP_CodeSniffer\Files\File;
  *   they should be located in the module file, in the beginning of the general comment.
  * - All variable names must be lowercase
  *
- * @link https://devdocs.magento.com/guides/v2.3/coding-standards/code-standard-less.html#local-variables
- * @link https://devdocs.magento.com/guides/v2.3/coding-standards/code-standard-less.html#naming
+ * @link http://devdocs.magento.com/guides/v2.0/coding-standards/code-standard-less.html#local-variables
+ * @link http://devdocs.magento.com/guides/v2.0/coding-standards/code-standard-less.html#naming
+ *
  */
 class VariablesSniff implements Sniff
 {
@@ -29,7 +30,7 @@ class VariablesSniff implements Sniff
     public $supportedTokenizers = [TokenizerSymbolsInterface::TOKENIZER_CSS];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -37,7 +38,7 @@ class VariablesSniff implements Sniff
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function process(File $phpcsFile, $stackPtr)
     {

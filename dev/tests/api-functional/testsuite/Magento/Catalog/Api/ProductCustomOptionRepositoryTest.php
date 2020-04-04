@@ -5,6 +5,8 @@
  * See COPYING.txt for license details.
  */
 
+// @codingStandardsIgnoreFile
+
 namespace Magento\Catalog\Api;
 
 use Magento\Catalog\Model\ProductRepository;
@@ -146,10 +148,6 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
     public function testSave($optionData)
     {
         $productSku = 'simple';
-        /** @var \Magento\Catalog\Model\ProductRepository $productRepository */
-        $productRepository = $this->objectManager->create(
-            \Magento\Catalog\Model\ProductRepository::class
-        );
 
         $optionDataPost = $optionData;
         $optionDataPost['product_sku'] = $productSku;
@@ -166,7 +164,6 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
         ];
 
         $result = $this->_webApiCall($serviceInfo, ['option' => $optionDataPost]);
-        $product = $productRepository->get($productSku);
         unset($result['product_sku']);
         unset($result['option_id']);
         if (!empty($result['values'])) {
@@ -174,12 +171,7 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
                 unset($result['values'][$key]['option_type_id']);
             }
         }
-
         $this->assertEquals($optionData, $result);
-        $this->assertTrue($product->getHasOptions() == 1);
-        if ($optionDataPost['is_require']) {
-            $this->assertTrue($product->getRequiredOptions() == 1);
-        }
     }
 
     public function optionDataProvider()
@@ -190,7 +182,7 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
             $fixtureOptions[$item['type']] = [
                 'optionData' => $item,
             ];
-        }
+        };
 
         return $fixtureOptions;
     }
@@ -218,16 +210,13 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
         ];
 
         if (TESTS_WEB_API_ADAPTER == self::ADAPTER_SOAP) {
-            if ($optionDataPost['title'] === null || $optionDataPost['title'] === '') {
-                $this->expectException('SoapFault');
-                $this->expectExceptionMessage('Missed values for option required fields');
+            if (isset($optionDataPost['title']) && empty($optionDataPost['title'])) {
+                $this->expectException('SoapFault', 'Missed values for option required fields');
             } else {
-                $this->expectException('SoapFault');
-                $this->expectExceptionMessage('Invalid option');
+                $this->expectException('SoapFault', 'Invalid option');
             }
         } else {
-            $this->expectException('Exception');
-            $this->expectExceptionCode(400);
+            $this->expectException('Exception', '', 400);
         }
         $this->_webApiCall($serviceInfo, ['option' => $optionDataPost]);
     }
@@ -240,7 +229,7 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
             $fixtureOptions[$key] = [
                 'optionData' => $item,
             ];
-        }
+        };
 
         return $fixtureOptions;
     }
@@ -399,9 +388,8 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
      * @dataProvider optionNegativeUpdateDataProvider
      * @param array $optionData
      * @param string $message
-     * @param int $exceptionCode
      */
-    public function testUpdateNegative($optionData, $message, $exceptionCode)
+    public function testUpdateNegative($optionData, $message)
     {
         $this->_markTestAsRestOnly();
         $productSku = 'simple';
@@ -418,9 +406,7 @@ class ProductCustomOptionRepositoryTest extends WebapiAbstract
             ],
         ];
 
-        $this->expectException('Exception');
-        $this->expectExceptionMessage($message);
-        $this->expectExceptionCode($exceptionCode);
+        $this->expectException('Exception', $message, 400);
         $this->_webApiCall($serviceInfo, ['option' => $optionData]);
     }
 

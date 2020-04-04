@@ -126,15 +126,11 @@ class FillBillingInformationStep implements TestStepInterface
         if ($this->billingCheckboxState) {
             $this->assertBillingAddressCheckbox->processAssert($this->checkoutOnepage, $this->billingCheckboxState);
         }
-
-        if (!$this->editBillingInformation) {
-            $billingAddress = $this->billingCheckboxState === 'Yes'
-                ? $this->shippingAddress
-                : $this->getDefaultBillingAddress();
-
-            return ['billingAddress' => $billingAddress];
+        if ($this->billingCheckboxState === 'Yes' && !$this->editBillingInformation) {
+            return [
+                'billingAddress' => $this->shippingAddress
+            ];
         }
-
         if ($this->billingAddress) {
             $selectedPaymentMethod = $this->checkoutOnepage->getPaymentBlock()->getSelectedPaymentMethodBlock();
             if ($this->shippingAddress) {
@@ -143,11 +139,9 @@ class FillBillingInformationStep implements TestStepInterface
             $selectedPaymentMethod->getBillingBlock()->fillBilling($this->billingAddress);
             $billingAddress = $this->billingAddress;
         }
-
         if (isset($this->billingAddressCustomer['added'])) {
             $addressIndex = $this->billingAddressCustomer['added'];
-            $billingAddress = $this->customer->getDataFieldConfig('address')['source']
-                ->getAddresses()[$addressIndex];
+            $billingAddress = $this->customer->getDataFieldConfig('address')['source']->getAddresses()[$addressIndex];
             $address = $this->objectManager->create(
                 \Magento\Customer\Test\Block\Address\Renderer::class,
                 ['address' => $billingAddress, 'type' => 'html_for_select_element']
@@ -161,26 +155,5 @@ class FillBillingInformationStep implements TestStepInterface
         return [
             'billingAddress' => $billingAddress
         ];
-    }
-
-    /**
-     * Get default billing address
-     *
-     * @return Address|null
-     */
-    private function getDefaultBillingAddress()
-    {
-        $addresses = $this->customer->hasData('address')
-            ? $this->customer->getDataFieldConfig('address')['source']->getAddresses()
-            : [];
-        $defaultAddress = null;
-        foreach ($addresses as $address) {
-            if ($address->getDefaultBilling() === 'Yes') {
-                $defaultAddress = $address;
-                break;
-            }
-        }
-
-        return $defaultAddress;
     }
 }

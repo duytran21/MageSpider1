@@ -5,8 +5,8 @@
  */
 namespace Magento\Sniffs\Less;
 
-use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
+use PHP_CodeSniffer\Files\File;
 
 /**
  * Class CommentLevelsSniff
@@ -15,7 +15,8 @@ use PHP_CodeSniffer\Sniffs\Sniff;
  * First, second and third level comments should have two spaces after "//".
  * Inline comments should have one space after "//".
  *
- * @link https://devdocs.magento.com/guides/v2.3/coding-standards/code-standard-less.html#comments
+ * @link http://devdocs.magento.com/guides/v2.0/coding-standards/code-standard-less.html#comments
+ *
  */
 class CommentLevelsSniff implements Sniff
 {
@@ -41,7 +42,7 @@ class CommentLevelsSniff implements Sniff
     public $supportedTokenizers = [TokenizerSymbolsInterface::TOKENIZER_CSS];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function register()
     {
@@ -49,7 +50,7 @@ class CommentLevelsSniff implements Sniff
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function process(File $phpcsFile, $stackPtr)
     {
@@ -72,7 +73,14 @@ class CommentLevelsSniff implements Sniff
             return;
         }
 
-        $this->validateCommentLevel($phpcsFile, $stackPtr, $tokens);
+        // validation of levels comments
+        if (!in_array($tokens[$stackPtr + 1]['content'], [
+                TokenizerSymbolsInterface::DOUBLE_WHITESPACE,
+                TokenizerSymbolsInterface::NEW_LINE,
+            ])
+        ) {
+            $phpcsFile->addError('Level\'s comment does not have 2 spaces after "//"', $stackPtr, 'SpacesMissed');
+        }
 
         if (!$this->isNthLevelComment($phpcsFile, $stackPtr, $tokens)) {
             return;
@@ -187,28 +195,5 @@ class CommentLevelsSniff implements Sniff
         }
 
         return $correct;
-    }
-
-    /**
-     * Validation of comment level.
-     *
-     * @param File $phpcsFile
-     * @param int $stackPtr
-     * @param array $tokens
-     */
-    private function validateCommentLevel(File $phpcsFile, int $stackPtr, array $tokens): void
-    {
-        if ($tokens[$stackPtr + 2]['content'] !== 'magento_import' &&
-            !in_array(
-                $tokens[$stackPtr + 1]['content'],
-                [
-                    TokenizerSymbolsInterface::DOUBLE_WHITESPACE,
-                    TokenizerSymbolsInterface::NEW_LINE,
-                ],
-                true
-            )
-        ) {
-            $phpcsFile->addError('Level\'s comment does not have 2 spaces after "//"', $stackPtr, 'SpacesMissed');
-        }
     }
 }

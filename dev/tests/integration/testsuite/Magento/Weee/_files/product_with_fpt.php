@@ -16,7 +16,6 @@ $entityModel = Bootstrap::getObjectManager()->create(\Magento\Eav\Model\Entity::
 $entityTypeId = $entityModel->setType(Product::ENTITY)->getTypeId();
 $groupId = $installer->getDefaultAttributeGroupId($entityTypeId, $attributeSetId);
 
-/** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute $attribute */
 $attribute = Bootstrap::getObjectManager()->create(
     \Magento\Catalog\Model\ResourceModel\Eav\Attribute::class
 );
@@ -28,15 +27,12 @@ $attribute->setAttributeCode(
     $groupId
 )->setAttributeSetId(
     $attributeSetId
-)->setFrontendLabel(
-    'fpt_for_all_front_label'
 )->setFrontendInput(
     'weee'
 )->setIsUserDefined(
     1
 )->save();
 
-/** @var Product $product */
 $product = Bootstrap::getObjectManager()->create(Product::class);
 $product->setTypeId(
     'simple'
@@ -51,7 +47,7 @@ $product->setTypeId(
 )->setStatus(
     \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED
 )->setStockData(
-    ['qty' => 100, 'is_in_stock' => 1, 'manage_stock' => 1]
+    ['qty' => 100, 'is_in_stock' => 1]
 )->setName(
     'Simple Product FPT'
 )->setSku(

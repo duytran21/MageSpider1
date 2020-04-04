@@ -9,9 +9,6 @@ namespace Magento\Framework\Model\ResourceModel\Db;
 
 use Magento\Framework\Config\ConfigOptionsListConstants;
 
-/**
- * Class ProfilerTest
- */
 class ProfilerTest extends \PHPUnit\Framework\TestCase
 {
     /**
@@ -24,27 +21,17 @@ class ProfilerTest extends \PHPUnit\Framework\TestCase
      */
     protected static $_testResourceName = 'testtest_0000_setup';
 
-    /**
-     * @inheritdoc
-     *
-     * phpcs:disable Magento2.Functions.StaticFunction
-     */
     public static function setUpBeforeClass()
     {
-        self::$_testResourceName = 'testtest_' . random_int(1000, 9999) . '_setup';
+        self::$_testResourceName = 'testtest_' . mt_rand(1000, 9999) . '_setup';
 
         \Magento\Framework\Profiler::enable();
-    } // phpcs:enable
+    }
 
-    /**
-     * @inheritdoc
-     *
-     * phpcs:disable Magento2.Functions.StaticFunction
-     */
     public static function tearDownAfterClass()
     {
         \Magento\Framework\Profiler::disable();
-    } // phpcs:enable
+    }
 
     protected function setUp()
     {
@@ -139,20 +126,19 @@ class ProfilerTest extends \PHPUnit\Framework\TestCase
         $connection = $this->_getConnection();
 
         try {
-            $connection->select()->from('unknown_table')->query()->fetch();
+            $connection->query('SELECT * FROM unknown_table');
         } catch (\Zend_Db_Statement_Exception $exception) {
-            $this->assertNotEmpty($exception);
         }
 
         if (!isset($exception)) {
-            $this->fail("Expected exception wasn't thrown!");
+            $this->fail("Expected exception didn't thrown!");
         }
 
         /** @var \Magento\Framework\App\ResourceConnection $resource */
         $resource = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()
             ->get(\Magento\Framework\App\ResourceConnection::class);
         $testTableName = $resource->getTableName('setup_module');
-        $connection->select()->from($testTableName)->query()->fetch();
+        $connection->query('SELECT * FROM ' . $testTableName);
 
         /** @var \Magento\Framework\Model\ResourceModel\Db\Profiler $profiler */
         $profiler = $connection->getProfiler();

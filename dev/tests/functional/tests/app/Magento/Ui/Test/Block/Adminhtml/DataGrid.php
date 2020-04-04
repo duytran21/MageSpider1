@@ -163,11 +163,6 @@ class DataGrid extends Grid
     protected $currentPage = ".//*[@data-ui-id='current-page-input'][not(ancestor::*[@class='sticky-header'])]";
 
     /**
-     * Top page element to implement a scrolling in case of grid element not visible.
-     */
-    private $topElementToScroll = 'header.page-header';
-
-    /**
      * Clear all applied Filters.
      *
      * @return void
@@ -186,7 +181,7 @@ class DataGrid extends Grid
      *
      * @return void
      */
-    public function waitFilterToLoad()
+    protected function waitFilterToLoad()
     {
         $this->getTemplateBlock()->waitLoader();
         $browser = $this->_rootElement;
@@ -337,7 +332,7 @@ class DataGrid extends Grid
     }
 
     /**
-     * Perform action using the dropdown above the grid.
+     * Peform action using the dropdown above the grid.
      *
      * @param array|string $action [array -> key = value from first select; value => value from subselect]
      * @return void
@@ -373,10 +368,6 @@ class DataGrid extends Grid
             $this->sortGridByField('ID');
         }
         foreach ($items as $item) {
-            //Scroll to the top of the page in case current page input is not visible.
-            if (!$this->_rootElement->find($this->currentPage, Locator::SELECTOR_XPATH)->isVisible()) {
-                $this->browser->find($this->topElementToScroll)->hover();
-            }
             $this->_rootElement->find($this->currentPage, Locator::SELECTOR_XPATH)->setValue('');
             $this->waitLoader();
             $selectItem = $this->getRow($item)->find($this->selectItem);

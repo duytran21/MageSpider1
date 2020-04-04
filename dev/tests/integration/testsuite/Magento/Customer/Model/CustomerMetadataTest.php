@@ -51,28 +51,18 @@ class CustomerMetadataTest extends \PHPUnit\Framework\TestCase
 
     public function testGetCustomAttributesMetadata()
     {
-        $customAttributesMetadataQty = count($this->service->getCustomAttributesMetadata()) ;
+        $customAttributesMetadata = $this->service->getCustomAttributesMetadata();
+        $this->assertCount(0, $customAttributesMetadata, "Invalid number of attributes returned.");
 
         // Verify the consistency of getCustomerAttributeMetadata() function from the 2nd call of the same service
-        $customAttributesMetadata1Qty = count($this->service->getCustomAttributesMetadata());
-        $this->assertEquals(
-            $customAttributesMetadataQty,
-            $customAttributesMetadata1Qty,
-            "Invalid number of attributes returned."
-        );
+        $customAttributesMetadata1 = $this->service->getCustomAttributesMetadata();
+        $this->assertCount(0, $customAttributesMetadata1, "Invalid number of attributes returned.");
 
         // Verify the consistency of getCustomAttributesMetadata() function from the 2nd service
-        $customAttributesMetadata2Qty = count($this->serviceTwo->getCustomAttributesMetadata());
-        $this->assertEquals(
-            $customAttributesMetadataQty,
-            $customAttributesMetadata2Qty,
-            "Invalid number of attributes returned."
-        );
+        $customAttributesMetadata2 = $this->serviceTwo->getCustomAttributesMetadata();
+        $this->assertCount(0, $customAttributesMetadata2, "Invalid number of attributes returned.");
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     public function testGetNestedOptionsCustomerAttributesMetadata()
     {
         $nestedOptionsAttribute = 'store_id';
@@ -169,7 +159,7 @@ class CustomerMetadataTest extends \PHPUnit\Framework\TestCase
         );
 
         // Verify the consistency of custom attribute metadata from two services
-        // after getAttributeCode was called
+        // after getAttrbiuteCode was called
         foreach ($customAttributesMetadata2 as $attribute) {
             $attribute->getAttributeCode();
         }
@@ -241,12 +231,6 @@ class CustomerMetadataTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertNotEmpty($attributes);
 
-        // remove odd extension attributes
-        $allAttributes = $expectAttrsWithVals;
-        $allAttributes['created_at'] = $attributes['created_at'];
-        $allAttributes['updated_at'] = $attributes['updated_at'];
-        $attributes = array_intersect_key($attributes, $allAttributes);
-
         foreach ($attributes as $attributeCode => $attributeValue) {
             $this->assertNotNull($attributeCode);
             $this->assertNotNull($attributeValue);
@@ -272,7 +256,7 @@ class CustomerMetadataTest extends \PHPUnit\Framework\TestCase
             $this->assertEquals(
                 $attributeMetadata,
                 $attributeMetadata1,
-                'Attribute metadata from the same service became different after getAttributeCode was called'
+                'Attribute metadata from the the same service became different after getAttributeCode was called'
             );
             // Verify the consistency of attribute metadata from two services
             // after getAttributeCode was called

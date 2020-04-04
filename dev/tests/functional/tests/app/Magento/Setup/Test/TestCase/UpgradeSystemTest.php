@@ -124,7 +124,6 @@ class UpgradeSystemTest extends Injectable
 
         // Check info and press 'Upgrade' button
         $upgrade['version'] = $version;
-        $upgrade['selectedPackages'] = $this->setupWizard->getSelectVersion()->getSelectedPackages();
         $assertVersionAndEdition->processAssert($this->setupWizard, $upgrade);
         $this->setupWizard->getSystemUpgrade()->clickSystemUpgrade();
 
@@ -132,8 +131,6 @@ class UpgradeSystemTest extends Injectable
 
         // Check application version
         $this->adminDashboard->open();
-        $this->adminDashboard->getModalMessage()->dismissIfModalAppears();
-        $this->adminDashboard->getModalMessage()->waitModalWindowToDisappear();
         $assertApplicationVersion->processAssert($this->adminDashboard, $version);
     }
 }

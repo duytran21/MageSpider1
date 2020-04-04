@@ -9,10 +9,7 @@ use Magento\CatalogImportExport\Model\AbstractProductExportImportTestCase;
 
 class ConfigurableTest extends AbstractProductExportImportTestCase
 {
-    /**
-     * @return array
-     */
-    public function exportImportDataProvider(): array
+    public function exportImportDataProvider()
     {
         return [
             'configurable-product' => [
@@ -37,12 +34,11 @@ class ConfigurableTest extends AbstractProductExportImportTestCase
     }
 
     /**
-     * @inheritdoc
+     * @param \Magento\Catalog\Model\Product $expectedProduct
+     * @param \Magento\Catalog\Model\Product $actualProduct
      */
-    protected function assertEqualsSpecificAttributes(
-        \Magento\Catalog\Model\Product $expectedProduct,
-        \Magento\Catalog\Model\Product $actualProduct
-    ): void {
+    protected function assertEqualsSpecificAttributes($expectedProduct, $actualProduct)
+    {
         /** @var \Magento\ConfigurableProduct\Model\Product\Type\Configurable $productType */
         $productType = $expectedProduct->getTypeInstance();
         $expectedAssociatedProducts = $productType->getUsedProductCollection($expectedProduct);
@@ -99,16 +95,12 @@ class ConfigurableTest extends AbstractProductExportImportTestCase
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function executeImportReplaceTest(
-        $skus,
-        $skippedAttributes,
-        $usePagination = false,
-        string $csvfile = null
-    ) {
-        $skippedAttributes = array_merge($skippedAttributes, ['_cache_instance_product_set_attributes']);
-        parent::executeImportReplaceTest($skus, $skippedAttributes, $usePagination, $csvfile);
+    public function importReplaceDataProvider()
+    {
+        $data = $this->exportImportDataProvider();
+        foreach ($data as $key => $value) {
+            $data[$key][2] = array_merge($value[2], ['_cache_instance_product_set_attributes']);
+        }
+        return $data;
     }
 }
