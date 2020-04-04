@@ -4,7 +4,15 @@
  * See COPYING.txt for license details.
  */
 
+<<<<<<< HEAD
 namespace Magento\Wonderland\Model\Data;
+=======
+<<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/FakeAttributeMetadata.php
+namespace Magento\Wonderland\Api\Model;
+=======
+namespace Magento\Wonderland\Model\Data;
+>>>>>>> parent of 401b74af... Updating 2.3.4 version:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/Data/FakeAttributeMetadata.php
+>>>>>>> parent of 401b74af... Updating 2.3.4 version
 
 /**
  * Customer attribute metadata class.

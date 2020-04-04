@@ -3,4 +3,12 @@
  * See COPYING.txt for license details.
  */
 
+<<<<<<< HEAD
 <?php $foo = bar; ?>
+=======
+<<<<<<< HEAD:dev/tests/static/framework/tests/unit/testsuite/Magento/Sniffs/EchoTags/_files/incorrect_echotag.txt
+<?php echo "foo" ?>
+=======
+<?php $foo = bar; ?>
+>>>>>>> parent of 401b74af... Updating 2.3.4 version:dev/tests/static/framework/tests/unit/testsuite/Magento/Sniffs/EchoTags/_files/correct_noecho.txt
+>>>>>>> parent of 401b74af... Updating 2.3.4 version
