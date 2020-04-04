@@ -7,6 +7,7 @@
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/Data/FakeCustomer.php
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/Data/FakeCustomer.php
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/Data/FakeCustomer.php
+<<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/Data/FakeCustomer.php
 <<<<<<< HEAD
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/Data/FakeCustomer.php
 namespace Magento\Wonderland\Model\Data;
@@ -25,6 +26,9 @@ namespace Magento\Wonderland\Model\Data;
 =======
 namespace Magento\Wonderland\Model\Data;
 >>>>>>> parent of 401b74af... Updating 2.3.4 version:dev/tests/integration/_files/Magento/TestModuleExtensionAttributes/Model/Data/FakeCustomer.php
+=======
+namespace Magento\Wonderland\Model\Data;
+>>>>>>> parent of 0d5d5354... Merge branch 'development' into production:dev/tests/integration/_files/Magento/TestModuleExtensionAttributes/Model/Data/FakeCustomer.php
 
 /**
  * Class Customer

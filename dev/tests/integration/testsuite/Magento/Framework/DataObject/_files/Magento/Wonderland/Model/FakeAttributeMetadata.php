@@ -5,6 +5,7 @@
  */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/FakeAttributeMetadata.php
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/FakeAttributeMetadata.php
 <<<<<<< HEAD
@@ -25,6 +26,9 @@ namespace Magento\Wonderland\Model\Data;
 =======
 namespace Magento\Wonderland\Api\Model;
 >>>>>>> parent of 401b74af... Updating 2.3.4 version
+=======
+namespace Magento\Wonderland\Api\Model;
+>>>>>>> parent of 0d5d5354... Merge branch 'development' into production
 
 /**
  * Customer attribute metadata class.
