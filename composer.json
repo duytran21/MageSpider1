@@ -10,7 +10,8 @@
     "require": {
         "magento/product-community-edition": "2.3.4",
         "composer/composer": "@alpha",
-        "magefan/module-blog": "2.8.0"
+        "magefan/module-blog": "2.8.0",
+        "magepal/magento2-gmailsmtpapp": "^2.6"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.2.0",

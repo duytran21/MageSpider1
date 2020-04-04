@@ -25,6 +25,18 @@
         </referenceContainer>
         <referenceContainer name="form.additional.info">
             <block class="Magento\Framework\View\Element\Template" name="form_additional_info_customer" template="Magento_Customer::additionalinfocustomer.phtml"/>
+            <block class="Magento\Captcha\Block\Captcha" name="captcha" after="-" cacheable="false">
+                <action method="setFormId">
+                    <argument name="formId" xsi:type="string">user_login</argument>
+                </action>
+                <action method="setImgWidth">
+                    <argument name="width" xsi:type="string">230</argument>
+                </action>
+                <action method="setImgHeight">
+                    <argument name="width" xsi:type="string">50</argument>
+                </action>
+            </block>
         </referenceContainer>
+
     </body>
 </page>

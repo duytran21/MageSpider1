@@ -14,8 +14,10 @@
         </referenceContainer>
         <move element="product.info.stock.sku" destination="product.info.price" after="product.info.name" before="product.price.custom" />
         <move element="product.info.review" destination="product.info.price" after="product.price.custom"/>
+        <!--
         <referenceBlock name="product.info.options.wrapper.bottom" remove="true" />
         <referenceBlock name="product.info.addtocart" remove="true"/>
+        -->
         <move element="product.info.description" destination="product.info.main" after="product.info.social"/>
         <referenceBlock name="product.info.description">
             <arguments>

@@ -240,6 +240,9 @@ return [
         'Klarna_Kp' => 1,
         'Magento_PaypalReCaptcha' => 1,
         'MSP_TwoFactorAuth' => 1,
+<<<<<<< HEAD
+        'MagePal_GmailSmtpApp' => 1,
+>>>>>>> 0d5d5354a201098c813fc5484e93945f229ef2d3
         'Magefan_Community' => 1,
         'Magefan_Blog' => 1,
         'Magespider_FbChatModule' => 1,
