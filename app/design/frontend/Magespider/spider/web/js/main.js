@@ -3,9 +3,16 @@ define([
   'slick'
 ], 
 function($) {
-  "use strict";
+  jQuery(document).ready(function () {
+            jQuery("#hp-top-slider").slick({
+                lazyload: 'progressive',
+		        arrows: true,
+		        dots: false,
+		        slidesToShow: 1,
+		        slidesToScroll: 1,
+		        autoplay: false,
+		        autoplaySpeed: 5000,
 
-  // Here your custom code...
-  console.log('Hola');
-
+			});
+	});
 });
