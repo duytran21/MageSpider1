@@ -6,6 +6,7 @@
 
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/FakeCustomer.php
 <<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/FakeCustomer.php
+<<<<<<< HEAD:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/FakeCustomer.php
 <<<<<<< HEAD
 namespace Magento\Wonderland\Api\Model;
 =======
@@ -15,6 +16,9 @@ namespace Magento\Wonderland\Model\Data;
 namespace Magento\Wonderland\Api\Model;
 >>>>>>> parent of 401b74af... Updating 2.3.4 version:dev/tests/integration/testsuite/Magento/Framework/DataObject/_files/Magento/Wonderland/Model/FakeCustomer.php
 >>>>>>> parent of 401b74af... Updating 2.3.4 version
+=======
+namespace Magento\Wonderland\Api\Model;
+>>>>>>> parent of 401b74af... Updating 2.3.4 version:dev/tests/integration/_files/Magento/TestModuleExtensionAttributes/Model/FakeCustomer.php
 =======
 namespace Magento\Wonderland\Api\Model;
 >>>>>>> parent of 401b74af... Updating 2.3.4 version:dev/tests/integration/_files/Magento/TestModuleExtensionAttributes/Model/FakeCustomer.php
