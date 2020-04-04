@@ -31,7 +31,7 @@
                     </arguments>
                 </block>
                 <container name="footer_social" htmlTag="div" htmlClass="footer-social" after="footer_menu">
-                    <block class="Magento\Newsletter\Block\Subscribe" name="form.subscribe" as="subscribe" template="Magento_Newsletter::subscribe.phtml"/>
+                    
                     <block class="Magento\Cms\Block\Block" name="social_link">
                         <arguments>
                             <argument name="block_id" xsi:type="string">
@@ -51,6 +51,8 @@
         </referenceContainer>
         <referenceBlock name="page.main.title" remove="true" />
         <referenceBlock name="footer_links" remove="true" />
-        <referenceBlock name="minicart" remove="true" />
+        <!--
+            <referenceBlock name="minicart" remove="true" />
+        -->
     </body>
 </page>
