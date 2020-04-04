@@ -1,5 +1,6 @@
 <?php
 <<<<<<< HEAD
+<<<<<<< HEAD
 return [
     'modules' => [
         'Magento_AdminAnalytics' => 1,
@@ -255,6 +256,8 @@ return [
     ]
 ];
 =======
+=======
+>>>>>>> parent of 401b74af... Updating 2.3.4 version
 return array (
   'modules' => 
   array (
@@ -381,4 +384,7 @@ return array (
     'Temando_Shipping' => 1,
   ),
 );
+<<<<<<< HEAD
 >>>>>>> parent of 0d5d5354... Merge branch 'development' into production
+=======
+>>>>>>> parent of 401b74af... Updating 2.3.4 version
