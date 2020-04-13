@@ -3,9 +3,12 @@ define([
   'slick'
 ], 
 function($) {
-  "use strict";
-
-  // Here your custom code...
-  console.log('Hola');
-
+	jQuery(document).ready(function (){
+		jQuery("#home-top-slider").slick({
+			arrows: false,
+			dots: true,
+			slidesToShow: 1,
+			slidesToScroll: 1
+		});
+	});
 });
